@@ -29,6 +29,7 @@ module Obp
 
       def start
         open_page
+        puts "[obp-access] writing output..."
         prepare_output_folders
         write_metadata
         write_images
@@ -39,7 +40,7 @@ module Obp
 
       def open_page
         page.go_to("#{PAGE_URL}#{options[:urn]}")
-        wait_for('div.std-title', browser: browser)
+        wait_for('div.std-title', page: page)
       end
 
       def title
@@ -86,6 +87,7 @@ module Obp
         File.open("#{options[:output]}/index.html", 'w') do |file|
           file.write(page_html)
         end
+        puts "[obp-access] output written to `#{options[:output]}/`."
       end
 
       def prepare_output_folders
@@ -102,11 +104,14 @@ module Obp
         doc.to_html
       end
 
-      def wait_for(want, browser:, wait: 1, step: 0.1)
+      def wait_for(want, page:, wait: 100, step: 1)
         meth = want.start_with?('/') ? :at_xpath : :at_css
-        until node = browser.public_send(meth, want)
+        print "[obp-access] loading page..."
+        until node = page.public_send(meth, want)
+          print "."
           (wait -= step) > 0 ? sleep(step) : break
         end
+        print " Done.\n"
         node
       end
     end
