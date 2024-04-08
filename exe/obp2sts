@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'obp/sts_html'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: obp2sts.rb HTML_FILE"
+end.parse!
+
+options[:html_path] = ARGV.pop
+
+raise OptionParser::MissingArgument, 'HTML_FILE is required. Please pass it as an argument' unless options[:html_path]
+
+stshtml = Obp::StsHtml.new(options[:html_path])
+
+File.open("#{options[:html_path]}.xml", "w") do |f|
+  f.write(stshtml.clean.to_xml)
+end
