@@ -1,1 +1,5 @@
 == ISO OBP data access
+
+```
+bundle exec ruby exe/obp-access -o output iso:std:iso:5598:ed-3:v1:en
+```
