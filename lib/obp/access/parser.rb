@@ -1,118 +1,112 @@
-require 'ferrum'
-require 'open-uri'
-require 'yaml'
-require 'optparse'
-require 'fileutils'
-require 'nokogiri'
+require "optparse"
+require "net/http"
+require "nokogiri"
+require "json"
+require "yaml"
+require "fileutils"
 
 module Obp
   module Access
     class Parser
-      BASE_URL = 'https://www.iso.org'.freeze
-      PAGE_URL = "#{BASE_URL}/obp/ui#".freeze
+      BASE_URL = "https://www.iso.org".freeze
+      API_URL = "#{BASE_URL}/obp/ui".freeze
 
-      CONTENT_CLASS = 'sts-standard'.freeze
-      TITLE_CLASS = 'std-title'.freeze
-      IDENTIFIER_CLASS = 'v-label-h2'.freeze
+      IMAGE_FOLDER = "images".freeze
 
-      attr_reader :browser, :page, :options
+      attr_reader :options
 
       def self.start(options)
         new(options).start
       end
 
       def initialize(options)
-        @browser = Ferrum::Browser.new
-        @page = browser.create_page
         @options = options
       end
 
       def start
-        open_page
+        @state = parse_state
+
         puts "[obp-access] writing output..."
+
         prepare_output_folders
         write_metadata
-        write_images
+        write_images_and_patch_links
         write_page_html
+
+        puts "[obp-access] output written to `#{options[:output]}/`"
       end
 
       private
 
-      def open_page
-        page.go_to("#{PAGE_URL}#{options[:urn]}")
-        wait_for('div.std-title', page: page)
-      end
-
       def title
-        @title ||= page.at_css(".#{TITLE_CLASS}").text
+        @title ||= @state.filter_map { |attr| attr.dig("pageState", "title") }.first
       end
 
       def identifier
-        @identifier ||= page.at_css(".#{IDENTIFIER_CLASS}").text
+        @identifier ||= @state.detect { |attr| attr["styles"]&.first == "h2" }["text"]
       end
 
-      def page_html
-        @page_html ||= begin
-          html = page.at_css(".#{CONTENT_CLASS}").evaluate('this.innerHTML')
-
-          replace_image_paths(html)
+      def page
+        @page ||= begin
+          source_html = @state.filter_map { |attr| attr["htmlContent"] }.first
+          Nokogiri::HTML(source_html)
         end
+      end
+
+      def prepare_output_folders
+        FileUtils.mkdir_p("#{options[:output]}/#{IMAGE_FOLDER}") # root folder will be created automatically
       end
 
       def write_metadata
-        File.open("#{options[:output]}/metadata.yml", "w") do |f|
-          data = {
-            'scrape_date' => Time.now,
-            'identifier' => identifier,
-            'title' => title,
-            'urn' => options[:urn]
-          }.to_yaml
+        metadata = {
+          "scrape_date" => Time.now.utc,
+          "identifier"  => identifier,
+          "title"       => title,
+          "urn"         => options[:urn]
+        }.to_yaml
 
-          f.write(data)
-        end
+        File.write("#{options[:output]}/metadata.yml", metadata)
       end
 
-      def write_images
-        images = page.xpath("//div[contains(@class, '#{CONTENT_CLASS}')]//img/@src")
+      def write_images_and_patch_links
+        images = page.xpath("//div[contains(@class, 'sts-standard')]//img")
         images.each do |img|
-          filename = File.basename(img.value)
+          filename = File.basename(img["src"])
+          subpath = "#{IMAGE_FOLDER}/#{filename}"
 
-          File.open("#{options[:output]}/images/#{filename}", 'wb') do |file|
-            file.write(URI.parse("#{BASE_URL}#{img.value}").open.read)
-          end
+          image_blob = load_image_blob(img["src"])
+          File.write("#{options[:output]}/#{subpath}", image_blob, mode: "wb")
+
+          img["src"] = subpath
         end
       end
 
       def write_page_html
-        File.open("#{options[:output]}/index.html", 'w') do |file|
-          file.write(page_html)
-        end
-        puts "[obp-access] output written to `#{options[:output]}/`."
+        File.write("#{options[:output]}/index.html", page.to_html)
       end
 
-      def prepare_output_folders
-        FileUtils.mkdir_p(options[:output])
-        FileUtils.mkdir_p("#{options[:output]}/images")
+      def parse_state
+        ui_response = load_ui_response
+        ui_json     = JSON.parse(ui_response.body)
+        state_json  = JSON.parse(ui_json["uidl"])
+
+        state_json["state"].values
       end
 
-      def replace_image_paths(html)
-        doc = Nokogiri::HTML(html)
-        doc.css('img').each do |img|
-          img['src'] = "images/#{File.basename(img['src'])}"
-        end
+      def load_ui_response
+        payload = {
+          "v-browserDetails" => 1,
+          "theme"            => "iso-red",
+          "v-loc"            => "#{API_URL}##{options[:urn]}"
+        }
 
-        doc.to_html
+        Net::HTTP.post_form(URI(API_URL), payload)
       end
 
-      def wait_for(want, page:, wait: 100, step: 1)
-        meth = want.start_with?('/') ? :at_xpath : :at_css
-        print "[obp-access] loading page..."
-        until node = page.public_send(meth, want)
-          print "."
-          (wait -= step) > 0 ? sleep(step) : break
-        end
-        print " Done.\n"
-        node
+      def load_image_blob(image_href)
+        image_url = "#{BASE_URL}#{image_href}"
+
+        Net::HTTP.get_response(URI(image_url)).body
       end
     end
   end
