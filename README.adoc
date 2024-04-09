@@ -1,5 +1,44 @@
-== ISO OBP data access
+== ISO OBP data access in Ruby
 
-```
-bundle exec ruby exe/obp-access -o output iso:std:iso:5598:ed-3:v1:en
-```
+=== Background
+
+The https://www.iso.org/obp/ui[ISO Online Browsing Platform (OBP)] is the ISO
+official location to obtain informative content from ISO standards.
+
+NOTE: Normative content of ISO standards is paywalled.
+
+Informative content provided on the OBP include:
+
+* Introduction (if present)
+* Scope
+* Normative references
+* Terms and definitions
+* Bibliography
+
+=== Use cases
+
+There are many situations where the informative content is already useful:
+
+* ISO project editors: obtain machine-readable content of informative clauses to
+  start a revision without waiting for the complicated STS XML file.
+
+* Terminology users: obtain term and definition details from a standard.
+
+* Bibliography users: find out what documents this standard refers to.
+
+=== Usage
+
+[source,sh]
+----
+bundle exec exe/obp-access -o output iso:std:iso:5598:ed-3:v1:en
+----
+
+== Credits
+
+This gem is developed, maintained and funded by
+https://www.ribose.com[Ribose Inc.]
+
+== License
+
+The gem is available as open source under the terms of the
+https://opensource.org/licenses/BSD-2-Clause[2-Clause BSD License].
