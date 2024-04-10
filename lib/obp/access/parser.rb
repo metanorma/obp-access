@@ -46,10 +46,25 @@ module Obp
         @identifier ||= @state.detect { |attr| attr["styles"]&.first == "h2" }["text"]
       end
 
+      def render_html(source_html)
+        Nokogiri::HTML5::Document.parse <<-EOHTML
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>#{identifier}: #{title}</title>
+            <meta charset="UTF-8">
+          </head>
+          <body>
+          #{source_html}
+          </body>
+        </html>
+        EOHTML
+      end
+
       def page
         @page ||= begin
           source_html = @state.filter_map { |attr| attr["htmlContent"] }.first
-          Nokogiri::HTML(source_html)
+          render_html(source_html)
         end
       end
 
