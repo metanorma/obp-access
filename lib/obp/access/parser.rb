@@ -39,7 +39,7 @@ module Obp
       private
 
       def title
-        @title ||= @state.filter_map { |attr| attr.dig("pageState", "title") }.first
+        @title ||= @state.filter_map { |attr| attr.dig("pageState", "title") }.first.split(",").last
       end
 
       def identifier
