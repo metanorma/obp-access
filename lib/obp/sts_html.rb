@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'sts'
 require 'nokogiri'
 require 'shale'
 require 'shale/adapter/nokogiri'
@@ -145,50 +146,4 @@ module Obp
     end
   end
 
-  class StsP < Shale::Mapper
-    attribute :text, Shale::Type::String
-
-    xml do
-      root 'p'
-      map_content to: :text
-    end
-  end
-
-  class StsList < Shale::Mapper
-    attribute :text, Shale::Type::String
-
-    xml do
-      root 'list'
-      map_content to: :text
-    end
-  end
-
-  class StsSection < Shale::Mapper
-    attribute :sec, StsSection
-    attribute :id, Shale::Type::String
-    attribute :title, Shale::Type::String
-    attribute :p, StsP, collection: true
-    attribute :list, StsList, collection: true
-
-    xml do
-      root 'standard'
-      map_element 'sec', to: :sec
-      map_element 'h1', to: :title
-      map_attribute 'id', to: :id
-      map_element 'p', to: :p
-      map_element 'list', to: :list
-    end
-  end
-
-  class StsStandard < Shale::Mapper
-    attribute :sec, StsSection, collection: true
-    attribute :copyright, Shale::Type::String
-
-    xml do
-      root 'standard'
-      map_element 'sec', to: :sec
-      map_element 'copyright-statement', to: :copyright
-    end
-
-  end
 end

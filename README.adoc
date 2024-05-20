@@ -1,6 +1,6 @@
-== ISO OBP data access in Ruby
+= ISO OBP data access in Ruby
 
-=== Background
+== Background
 
 The https://www.iso.org/obp/ui[ISO Online Browsing Platform (OBP)] is the ISO
 official location to obtain informative content from ISO standards.
@@ -15,7 +15,7 @@ Informative content provided on the OBP include:
 * Terms and definitions
 * Bibliography
 
-=== Use cases
+== Use cases
 
 There are many situations where the informative content is already useful:
 
@@ -26,12 +26,24 @@ There are many situations where the informative content is already useful:
 
 * Bibliography users: find out what documents this standard refers to.
 
-=== Usage
+== Usage
+
+=== Fetching from ISO OBP
 
 [source,sh]
 ----
 bundle exec exe/obp-access -o output iso:std:iso:5598:ed-3:v1:en
 ----
+
+=== Converting an ISO OBP HTML document into STS
+
+[source,sh]
+----
+bundle exec exe/obp2sts output/index.html
+# => output/index.html.xml # Temporary STS XML file
+# => output/index.html.sts.xml # Full STS XML file
+----
+
 
 == Credits
 

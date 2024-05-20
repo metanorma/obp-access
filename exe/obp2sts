@@ -2,6 +2,7 @@
 
 require 'optparse'
 require 'obp/sts_html'
+require 'sts'
 
 options = {}
 
@@ -14,7 +15,14 @@ options[:html_path] = ARGV.pop
 raise OptionParser::MissingArgument, 'HTML_FILE is required. Please pass it as an argument' unless options[:html_path]
 
 stshtml = Obp::StsHtml.new(options[:html_path])
+stsxmltext = stshtml.clean.to_xml
 
 File.open("#{options[:html_path]}.xml", "w") do |f|
-  f.write(stshtml.clean.to_xml)
+  f.write(stsxmltext)
+end
+
+sts = Sts::NisoSts::Standard.from_xml(stsxmltext)
+
+File.open("#{options[:html_path]}.sts.xml", "w") do |f|
+  f.write(sts.to_xml(pretty: true))
 end
