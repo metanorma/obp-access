@@ -26,6 +26,7 @@ module Obp
 
     def clean
       return @cleaned if @cleaned
+
       @cleaned = Nokogiri::XML(@doc.css(".sts-standard").to_xml)
       @cleaned.css("[xmlns]").remove_attr("xmlns")
       @cleaned.css("div.commentable").remove
@@ -67,65 +68,65 @@ module Obp
         end
 
         class_name = case class_first
-          when "sts-section"
-            "sec"
-          when "sts-sec-title"
-            "title"
-          when "sts-caption"
-            "caption"
-          when "sts-caption-label"
-            "label"
-          when "sts-caption-title"
-            "title"
-          when "sts-copyright"
-            "copyright-statement"
-          when "sts-fig"
-            "fig"
-          when "sts-label"
-            "label"
-          when "sts-non-normative-note"
-            "non-normative-note"
-          when "sts-non-normative-note-label"
-            "label"
-          when "sts-p"
-            "p"
-          when "sts-ref-list"
-            "ref-list"
-          when "sts-standard"
-            "standard"
-          when "sts-table-wrap"
-            "table-wrap"
-          when "sts-tbx-def"
-            "tbx--definition"
-          when "sts-tbx-entailedTerm"
-            "tbx--entailedTerm"
-          when "sts-tbx-entailedTerm-num"
-            "num"
-          when "sts-tbx-example"
-            "tbx--example"
-          when "sts-tbx-example-content"
-            "p"
-          when "sts-tbx-example-label"
-            "label"
-          when "sts-tbx-label"
-            "label"
-          when "sts-tbx-note"
-            "tbx--note"
-          when "sts-tbx-note-label"
-            "label"
-          when "sts-tbx-sec"
-            "term-sec"
-          when "sts-tbx-source"
-            "tbx--source"
-          when "sts-tbx-term"
-            "tbx--term"
-          when "sts-tbx-term-depr-label"
-            "label"
-          when "sts-xref"
-            "xref"
-          else
-            raise StandardError.new("class_first #{class_first} not recognized")
-          end
+                     when "sts-section"
+                       "sec"
+                     when "sts-sec-title"
+                       "title"
+                     when "sts-caption"
+                       "caption"
+                     when "sts-caption-label"
+                       "label"
+                     when "sts-caption-title"
+                       "title"
+                     when "sts-copyright"
+                       "copyright-statement"
+                     when "sts-fig"
+                       "fig"
+                     when "sts-label"
+                       "label"
+                     when "sts-non-normative-note"
+                       "non-normative-note"
+                     when "sts-non-normative-note-label"
+                       "label"
+                     when "sts-p"
+                       "p"
+                     when "sts-ref-list"
+                       "ref-list"
+                     when "sts-standard"
+                       "standard"
+                     when "sts-table-wrap"
+                       "table-wrap"
+                     when "sts-tbx-def"
+                       "tbx--definition"
+                     when "sts-tbx-entailedTerm"
+                       "tbx--entailedTerm"
+                     when "sts-tbx-entailedTerm-num"
+                       "num"
+                     when "sts-tbx-example"
+                       "tbx--example"
+                     when "sts-tbx-example-content"
+                       "p"
+                     when "sts-tbx-example-label"
+                       "label"
+                     when "sts-tbx-label"
+                       "label"
+                     when "sts-tbx-note"
+                       "tbx--note"
+                     when "sts-tbx-note-label"
+                       "label"
+                     when "sts-tbx-sec"
+                       "term-sec"
+                     when "sts-tbx-source"
+                       "tbx--source"
+                     when "sts-tbx-term"
+                       "tbx--term"
+                     when "sts-tbx-term-depr-label"
+                       "label"
+                     when "sts-xref"
+                       "xref"
+                     else
+                       raise StandardError.new("class_first #{class_first} not recognized")
+                     end
 
         ele.remove_class(class_first)
         ele.name = class_name
@@ -175,6 +176,7 @@ module Obp
 
     def title
       return @title if @title
+
       title_concat = @metadata["title"].strip
       @title = {
         intro: nil,
@@ -184,7 +186,7 @@ module Obp
       }
 
       # Check if there is a "Part X:" text, and then parse from there.
-      if loc = title_concat.index(/Part \d+:/)
+      if title_concat.index(/Part \d+:/)
         # has title
         # title_split = @metadata[:title].strip.split('—')
         raise "Building a Part document not implemented."
@@ -205,13 +207,14 @@ module Obp
           @title[:main] = title_split[3]
         end
       end
+
       @title
     end
 
     def urn_to_prefix(html_id)
       html_id
-        .gsub("toc_#{@metadata["urn"].gsub(":", "_")}_", "")
-        .gsub("#{@metadata["urn"].gsub(":", "_")}_", "")
+        .gsub("toc_#{@metadata['urn'].gsub(':', '_')}_", "")
+        .gsub("#{@metadata['urn'].gsub(':', '_')}_", "")
     end
 
     def section_by_id(id)

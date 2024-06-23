@@ -1,3 +1,3 @@
-require 'obp/access/version'
-require 'obp/access'
-require 'obp/sts_html'
+require "obp/access/version"
+require "obp/access"
+require "obp/sts_html"

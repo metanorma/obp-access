@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'obp-access'
+require "obp-access"
 
 Obp::Access.start

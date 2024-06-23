@@ -12,7 +12,10 @@ end.parse!
 
 options[:html_path] = ARGV.pop
 
-raise OptionParser::MissingArgument, "HTML_FILE is required. Please pass it as an argument" unless options[:html_path]
+unless options[:html_path]
+  raise OptionParser::MissingArgument,
+        "HTML_FILE is required. Please pass it as an argument"
+end
 
 stshtml = Obp::StsHtml.new(options[:html_path])
 stsxmltext = stshtml.cleaned.to_xml
