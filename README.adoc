@@ -37,11 +37,13 @@ bundle exec exe/obp-access -o output iso:std:iso:5598:ed-3:v1:en
 
 === Converting an ISO OBP HTML document into STS
 
+WARNING: This is WORK IN PROGRESS.
+
 [source,sh]
 ----
 bundle exec exe/obp2sts output/index.html
-# => output/index.html.xml # Temporary STS XML file
-# => output/index.html.sts.xml # Full STS XML file
+# => output/index.html.xml # Preprocessed XML file using Nokogiri for easier processing (#clean method)
+# => output/index.html.sts.xml # Full STS XML file (#to_sts method)
 ----
 
 

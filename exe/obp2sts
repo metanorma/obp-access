@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
-require 'obp/sts_html'
-require 'sts'
+require "optparse"
+require "obp/sts_html"
+require "sts"
 
 options = {}
 
@@ -12,17 +12,18 @@ end.parse!
 
 options[:html_path] = ARGV.pop
 
-raise OptionParser::MissingArgument, 'HTML_FILE is required. Please pass it as an argument' unless options[:html_path]
+raise OptionParser::MissingArgument, "HTML_FILE is required. Please pass it as an argument" unless options[:html_path]
 
 stshtml = Obp::StsHtml.new(options[:html_path])
-stsxmltext = stshtml.clean.to_xml
+stsxmltext = stshtml.cleaned.to_xml
 
 File.open("#{options[:html_path]}.xml", "w") do |f|
   f.write(stsxmltext)
 end
 
-sts = Sts::NisoSts::Standard.from_xml(stsxmltext)
-
+# sts = Sts::NisoSts::Standard.from_xml(stsxmltext)
+sts = stshtml.to_sts
+pp sts
 File.open("#{options[:html_path]}.sts.xml", "w") do |f|
   f.write(sts.to_xml(pretty: true))
 end
