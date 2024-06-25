@@ -232,9 +232,11 @@ module Obp
       Sts::NisoSts::Section.new.tap do |sec|
         sec.type = "foreword"
         sec.id = "sec_foreword"
-        sec.title = sec_foreword.css("title").text
+        sec.title = Sts::NisoSts::Title.new.tap do |title|
+          title.content = sec_foreword.css("title").text
+        end
         sec.paragraphs = paragraphs.map do |p|
-          xml_to_sts_class(p)
+          xml_to_sts_class(p) if p.name == "p"
         end
       end
     end
@@ -246,10 +248,12 @@ module Obp
       Sts::NisoSts::Section.new.tap do |sec|
         sec.type = "intro"
         sec.id = "sec_intro"
-        sec.title = sec_intro.css("title").text
+        sec.title = Sts::NisoSts::Title.new.tap do |title|
+          title.content = sec_intro.css("title").text
+        end
         sec.specific_use = "introduction.int"
         sec.paragraphs = sec_intro.children.map do |p|
-          xml_to_sts_class(p)
+          xml_to_sts_class(p) if p.name == "p"
         end
       end
     end
@@ -262,7 +266,7 @@ module Obp
         sec.annex_type = "(informative)"
         sec.content_type = "bibl"
         sec.title = xml_to_sts_class(sec_bibl.css("> title:first").first)
-        sec.ref_list = xml_to_sts_class(sec_bibl.css("> ref-list:first").first)
+        sec.ref_list = xml_to_sts_class(sec_bibl.css("> ref-list:first"))
       end
     end
 
@@ -297,11 +301,19 @@ module Obp
         title = xml.css("> title:first")
         Sts::NisoSts::Section.new.tap do |sec|
           sec.type = "clause"
-          sec.label = xml_to_sts_class(label) unless label.empty?
-          sec.title = xml_to_sts_class(title) unless title.empty?
-          sec.paragraphs = xml.children.map do |p|
-            xml_to_sts_class(p)
+          unless label.empty?
+            label = label.first if label.is_a?(Nokogiri::XML::NodeSet)
+            sec.label = xml_to_sts_class(label)
           end
+
+          unless title.empty?
+            sec.title = Sts::NisoSts::Title.new.tap do |section_title|
+              section_title.content = xml_to_sts_class(title)
+            end
+          end
+          sec.paragraphs = xml.children.map do |p|
+            xml_to_sts_class(p) if p.name == "p"
+          end.compact
         end
       when "list"
         children = xml.children.map do |child|
@@ -364,11 +376,13 @@ module Obp
               end
 
               # TODO: Deal with citations that are not standards
-              ref.std = Sts::NisoSts::ReferenceStandard.new.tap do |std|
+              ref.std = [Sts::NisoSts::ReferenceStandard.new.tap do |std|
                 std.type = "standard"
                 std.title = ref_title
-                std.std_ref = ref_id if ref_id
-              end
+                if ref_id
+                  std.std_ref = Sts::NisoSts::StandardRef.new(value: ref_id)
+                end
+              end]
             end
           end
         end
@@ -384,7 +398,9 @@ module Obp
             iso_meta.content_language = identifier.language
 
             iso_meta.title_wrap = Sts::NisoSts::TitleWrap.new.tap do |title_wrap|
-              title_wrap.full = title[:full]
+              title_wrap.full = Sts::NisoSts::TitleFull.new.tap do |title_full|
+                title_full.content = title[:full]
+              end
               title_wrap.main = title[:main]
               title_wrap.intro = title[:intro]
               title_wrap.lang = identifier.language
