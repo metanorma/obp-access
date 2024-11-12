@@ -8,3 +8,6 @@
 /tmp/
 Gemfile.lock
 .DS_Store
+.idea/
+obp-access-*.gem
+.rubocop-https---raw-githubusercontent-com-riboseinc-oss-guides-master-ci-rubocop-yml
