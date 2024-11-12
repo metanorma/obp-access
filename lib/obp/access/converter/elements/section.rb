@@ -16,6 +16,7 @@ module Obp
               # FIXME: Can't determine 'sec-type' attr from HTML
               xml.sec(id: "sub-#{id}", "sec-type": "FIXME") do
                 xml.label id
+                xml.title title
               end
             end
           end

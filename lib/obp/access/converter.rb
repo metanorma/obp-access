@@ -33,12 +33,9 @@ module Obp
       private
 
       def nodes
-        # Remove NBSP from html
-        html = source.gsub(160.chr("UTF-8"), "")
+        html = source.gsub(160.chr("UTF-8"), " ") # Convert NBSP to spaces from html
         doc = Nokogiri::HTML(html)
-
-        # Find all direct sections from HTML
-        doc.css("body > div.sts-standard > div.sts-section")
+        doc.css("body > div.sts-standard > div.sts-section") # Find all direct sections from HTML
       end
     end
   end
