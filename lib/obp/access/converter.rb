@@ -1,4 +1,5 @@
 require_relative "converter/elements"
+require_relative "converter/elements/root"
 require_relative "converter/elements/base"
 require_relative "converter/elements/introduction"
 require_relative "converter/elements/section"
@@ -14,15 +15,15 @@ module Obp
       end
 
       def to_xml
-        doc = Nokogiri::XML(builder.to_xml)
+        root = Elements::Root.new(urn:)
+        doc = Nokogiri::XML(root.to_xml)
 
-        # FIXME: Can't determine 'sec-type' attr from HTML
         nodes.map do |node|
           Elements.descendants.map do |descendant|
-            element = descendant.new(node:)
+            element = descendant.new(doc:, node:)
             next unless element.match_node?
 
-            doc.at(element.target).add_child(element.to_xml)
+            element.render
           end
         end
 
@@ -32,22 +33,12 @@ module Obp
       private
 
       def nodes
-        # Find all direct sections from HTML
-        doc = Nokogiri::HTML(source)
-        doc.css("body > div.sts-standard > div.sts-section")
-      end
+        # Remove NBSP from html
+        html = source.gsub(160.chr("UTF-8"), "")
+        doc = Nokogiri::HTML(html)
 
-      def builder
-        Nokogiri::XML::Builder.new do |xml|
-          xml.standard("xmlns:xlink": "http://www.w3.org/1999/xlink",
-                       "xmlns:mml": "http://www.w3.org/1998/Math/MathML",
-                       "xmlns:tbx": urn,
-                       id: "e1d18be9",
-                       "xml:lang": "en") do
-            xml.front
-            xml.body
-          end
-        end
+        # Find all direct sections from HTML
+        doc.css("body > div.sts-standard > div.sts-section")
       end
     end
   end
