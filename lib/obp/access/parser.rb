@@ -33,6 +33,8 @@ module Obp
         write_images_and_patch_links
         write_page_html
 
+        convert_html_to_xml
+
         puts "[obp-access] output written to `#{options[:output]}/`"
       end
 
@@ -126,6 +128,11 @@ module Obp
         image_url = "#{BASE_URL}#{image_href}"
 
         Net::HTTP.get_response(URI(image_url)).body
+      end
+
+      def convert_html_to_xml
+        html = @state.filter_map { |attr| attr["htmlContent"] }.first
+        Converter.new(urn: options[:urn], source: html).to_xml
       end
     end
   end
