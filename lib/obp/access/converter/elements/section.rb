@@ -11,12 +11,13 @@ module Obp
             :body
           end
 
-          def to_xml
-            Nokogiri::HTML::DocumentFragment.parse <<~EOHTML
-              <sec id="sub-#{id}">
-                <label>#{id}</label>
-              </sec>
-            EOHTML
+          def content
+            Nokogiri::XML::Builder.new do |xml|
+              # FIXME: Can't determine 'sec-type' attr from HTML
+              xml.sec(id: "sub-#{id}", "sec-type": "FIXME") do
+                xml.label id
+              end
+            end
           end
         end
       end
