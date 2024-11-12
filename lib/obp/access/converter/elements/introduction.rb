@@ -14,7 +14,7 @@ module Obp
           def content
             Nokogiri::XML::Builder.new do |xml|
               xml.sec("sec-type": "intro", "specific-use": "introduction.int", id: "introduction.int") do
-                xml.title node.at_css("h1.sts-sec-title").content
+                xml.title title
                 node.search("> div.sts-p").map do |p|
                   xml.p p.content
                 end

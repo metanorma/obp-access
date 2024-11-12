@@ -14,6 +14,10 @@ module Obp
             @id ||= node.attr("id").split("_").last
           end
 
+          def title
+            node.at_css("h1.sts-sec-title").content
+          end
+
           def to_xml
             content.doc.root.to_xml
           end
