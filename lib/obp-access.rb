@@ -1,2 +1,2 @@
-require 'obp/access/version'
-require 'obp/access'
+require "obp/access/version"
+require "obp/access"

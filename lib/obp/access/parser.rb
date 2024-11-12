@@ -39,11 +39,15 @@ module Obp
       private
 
       def title
-        @title ||= @state.filter_map { |attr| attr.dig("pageState", "title") }.first.split(",").last
+        @title ||= @state.filter_map do |attr|
+          attr.dig("pageState", "title")
+        end.first.split(",").last
       end
 
       def identifier
-        @identifier ||= @state.detect { |attr| attr["styles"]&.first == "h2" }["text"]
+        @identifier ||= @state.detect do |attr|
+          attr["styles"]&.first == "h2"
+        end["text"]
       end
 
       def render_html(source_html)
@@ -75,9 +79,9 @@ module Obp
       def write_metadata
         metadata = {
           "scrape_date" => Time.now.utc,
-          "identifier"  => identifier,
-          "title"       => title,
-          "urn"         => options[:urn]
+          "identifier" => identifier,
+          "title" => title,
+          "urn" => options[:urn],
         }.to_yaml
 
         File.write("#{options[:output]}/metadata.yml", metadata)
@@ -111,8 +115,8 @@ module Obp
       def load_ui_response
         payload = {
           "v-browserDetails" => 1,
-          "theme"            => "iso-red",
-          "v-loc"            => "#{API_URL}##{options[:urn]}"
+          "theme" => "iso-red",
+          "v-loc" => "#{API_URL}##{options[:urn]}",
         }
 
         Net::HTTP.post_form(URI(API_URL), payload)
