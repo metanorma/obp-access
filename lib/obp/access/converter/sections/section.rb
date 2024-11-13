@@ -1,7 +1,7 @@
 module Obp
   module Access
     class Converter
-      class Elements
+      class Sections
         class Section < Base
           def match_node?
             id =~ /\A\d+\Z/
@@ -16,7 +16,7 @@ module Obp
               # FIXME: Can't determine 'sec-type' attr from HTML
               xml.sec(id: "sub-#{id}", "sec-type": "FIXME") do
                 xml.label id
-                xml.title title
+                Converter.render_elements(node:, xml:)
               end
             end
           end

@@ -1,7 +1,7 @@
 module Obp
   module Access
     class Converter
-      class Elements
+      class Sections
         class Root
           attr_reader :urn
 
@@ -9,7 +9,7 @@ module Obp
             @urn = urn
           end
 
-          def to_xml
+          def content
             Nokogiri::XML::Builder.new do |xml|
               xml.standard("xmlns:xlink": "http://www.w3.org/1999/xlink",
                            "xmlns:mml": "http://www.w3.org/1998/Math/MathML",
@@ -19,7 +19,11 @@ module Obp
                 xml.front
                 xml.body
               end
-            end.to_xml
+            end
+          end
+
+          def to_document
+            content.doc
           end
         end
       end
