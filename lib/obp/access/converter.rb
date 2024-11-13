@@ -1,33 +1,20 @@
-require_relative "converter/elements"
-require_relative "converter/elements/root"
-require_relative "converter/elements/base"
-require_relative "converter/elements/introduction"
-require_relative "converter/elements/section"
+require_relative "converter/base"
 
 module Obp
   module Access
     class Converter
-      attr_reader :urn, :source
+      attr_reader :urn, :source, :document
 
       def initialize(urn:, source:)
         @urn = urn
         @source = source
+        @document = Sections::Root.new(urn:).to_document
       end
 
       def to_xml
-        root = Elements::Root.new(urn:)
-        doc = Nokogiri::XML(root.to_xml)
+        nodes.map { |node| Converter.render_sections(document:, node:) }
 
-        nodes.map do |node|
-          Elements.descendants.map do |descendant|
-            element = descendant.new(doc:, node:)
-            next unless element.match_node?
-
-            element.render
-          end
-        end
-
-        doc.root.to_xml
+        pp document.root.to_xml
       end
 
       private
