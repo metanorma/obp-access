@@ -1,7 +1,7 @@
 module Obp
   module Access
     class Converter
-      class Elements
+      class Sections
         class Introduction < Base
           def match_node?
             id == "intro"
@@ -14,10 +14,7 @@ module Obp
           def content
             Nokogiri::XML::Builder.new do |xml|
               xml.sec("sec-type": "intro", "specific-use": "introduction.int", id: "introduction.int") do
-                xml.title title
-                node.search("> div.sts-p").map do |p|
-                  xml.p p.content
-                end
+                Converter.render_elements(node:, xml:)
               end
             end
           end
