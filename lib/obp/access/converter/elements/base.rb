@@ -3,34 +3,17 @@ module Obp
     class Converter
       class Elements
         class Base
-          attr_reader :doc, :node
+          attr_reader :node
 
-          def initialize(doc:, node:)
-            @doc = doc
+          def initialize(node:)
             @node = node
           end
 
-          def id
-            @id ||= node.attr("id").split("_").last
-          end
-
-          def title
-            node.at_css("h1.sts-sec-title").content
-          end
-
-          def to_xml
+          def render
             content.doc.root.to_xml
           end
 
-          def render
-            doc.at(target).add_child(to_xml)
-          end
-
           def match_node?
-            raise NotImplementedError
-          end
-
-          def target
             raise NotImplementedError
           end
 
