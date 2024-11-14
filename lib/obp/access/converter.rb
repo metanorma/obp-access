@@ -14,13 +14,14 @@ module Obp
       def to_xml
         nodes.map { |node| Converter.render_sections(document:, node:) }
 
-        pp document.root.to_xml
+        xml_output = document.root.to_xml
+        pp xml_output
       end
 
       private
 
       def nodes
-        html = source.gsub(160.chr("UTF-8"), " ") # Convert NBSP to spaces from html
+        html = source.gsub(/[[:space:]]/, " ") # Convert NBSP to spaces from html
         doc = Nokogiri::HTML(html)
         doc.css("body > div.sts-standard > div.sts-section") # Find all direct sections from HTML
       end

@@ -5,7 +5,6 @@ require_relative "sections/section"
 
 require_relative "elements/base"
 require_relative "elements/list"
-require_relative "elements/list_item"
 require_relative "elements/title"
 require_relative "elements/paragraph"
 
