@@ -28,14 +28,11 @@ module Obp
 
         puts "[obp-access] writing output..."
 
-        prepare_output_folders
-        write_metadata
-        write_images_and_patch_links
-        write_page_html
+        xml_content = convert_html_to_xml
+        file_path = File.join(options[:output], "#{options[:urn]}.xml")
+        File.write(file_path, xml_content)
 
-        convert_html_to_xml
-
-        puts "[obp-access] output written to `#{options[:output]}/`"
+        puts "[obp-access] output written to `#{file_path}`"
       end
 
       private
