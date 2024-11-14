@@ -4,12 +4,13 @@ module Obp
       class Elements
         class Paragraph < Base
           def match_node?
-            node.name == "div" && node.attr("class") == "sts-p"
+            # Paragraph in a list are rendered differently
+            node.name == "div" && node.attr("class") == "sts-p" && node.parent.name != "li"
           end
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.p node.content
+              xml.p node.content.strip
             end
           end
         end

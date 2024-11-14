@@ -9,7 +9,7 @@ module Obp
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.title node.content
+              xml.title node.content.strip
             end
           end
         end
