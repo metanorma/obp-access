@@ -19,12 +19,19 @@ module Obp
         ObjectSpace.each_object(Class).select { |klass| klass < Elements::Base }
       end
 
-      def self.render_sections(document:, node:)
+      def self.render_sections(document:, node:, target: nil)
         Converter.sections.map do |descendant|
           section = descendant.new(document:, node:)
           next unless section.match_node?
 
-          section.render
+          xml = section.render(target:)
+          section_path = xml.first.path
+
+          node.search("div.sts-section.sts-tbx-sec").map do |children_node|
+            Converter.render_sections(document:, node: children_node, target: section_path)
+          end
+
+          xml
         end
       end
 

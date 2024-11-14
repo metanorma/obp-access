@@ -18,15 +18,11 @@ module Obp
             content.doc.root.to_xml
           end
 
-          def render
-            document.at(target).add_child(to_xml)
+          def render(target:)
+            document.at(target || self.target).add_child(to_xml)
           end
 
           def match_node?
-            raise NotImplementedError
-          end
-
-          def target
             raise NotImplementedError
           end
 
