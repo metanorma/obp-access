@@ -10,9 +10,7 @@ module Obp
 
       def to_xml
         rendered = Rendered.new(urn:, nodes:)
-        xml_output = rendered.to_xml
-
-        pp xml_output
+        rendered.to_xml
       end
 
       private

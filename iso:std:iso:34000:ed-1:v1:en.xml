@@ -1,0 +1,286 @@
+<standard xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:tbx="iso:std:iso:34000:ed-1:v1:en" id="e1d18be9" xml:lang="en">
+  <front>
+    <sec sec-type="intro" specific-use="introduction.int" id="introduction.int">
+      <title>Introduction</title>
+      <p>ISO documents relating to date and time concepts have been available since 1971.</p>
+      <p>This document presents terms and definitions for selected concepts relevant to date and time concepts and of their representation.</p>
+      <p>Specifically, the terminology presented in this document:</p>
+      <list>
+  <list-item>
+    <label>&#x2014;</label>
+    <p>serves as a sound basis in the understanding of date and time;</p>
+  </list-item>
+  <list-item>
+    <label>&#x2014;</label>
+    <p>guides new developments in the field by underpinning mutual understanding;</p>
+  </list-item>
+  <list-item>
+    <label>&#x2014;</label>
+    <p>serves as a quick and handy reference for those newly inaugurated to this field.</p>
+  </list-item>
+</list>
+      <p>In this document, the decimal sign is a comma on the line, and each group of three digits are separated by a small space from the preceding digits, counting from the decimal sign, in accordance with the ISO/IEC Directives, Part 2.</p>
+      <p>However, Resolution 10 of the 22nd General Conference on Weights and Measures (Conf&#xE9;rence G&#xE9;n&#xE9;rale des Poids et Mesures, CGPM) in 2003 stated that:</p>
+      <p>&#x201C;The decimal marker shall be either a point on the line or a comma on the line.&#x201D;</p>
+      <p>And reaffirmed the following resolution from Resolution 7 of the 9th CGPM, 1948:</p>
+      <p>&#x201C;Numbers may be divided in groups of three in order to facilitate reading.&#x201D;</p>
+      <p>In practice, the choice between these alternatives depends on customary use in the language concerned. In the technical areas of date and time, it is customary for the decimal point always to be used, and that numbers are not grouped, for all languages.</p>
+    </sec>
+  </front>
+  <body>
+    <sec id="sub-1" sec-type="FIXME">
+  <label>1</label>
+<title>1   Scope</title><p>This document defines terms related to date and time, from fundamental concepts to those of their usage and representation.</p></sec>
+    <sec id="sub-2" sec-type="FIXME">
+  <label>2</label>
+<title>2   Normative references</title><p>There are no normative references in this document.</p></sec>
+    <sec id="sub-3" sec-type="FIXME">
+  <label>3</label>
+<title>3   Terms related to general concepts</title><p>ISO and IEC maintain terminology databases for use in standardization at the following addresses:</p><list>
+  <list-item>
+    <label>&#x2014;</label>
+    <p>ISO Online browsing platform: available at</p>
+  </list-item>
+  <list-item>
+    <label>&#x2014;</label>
+    <p>IEC Electropedia: available at</p>
+  </list-item>
+</list><sec id="sub-3.1" sec-type="FIXME">
+  <label>3.1</label>
+<title>date</title><p>time  (3.2) on the calendar system  (6.1)time scale  (3.5)</p><p>Note 1 to entry: Common forms of date include calendar date  (7.8), ordinal date  (7.9) and week date  (7.10).</p></sec><sec id="sub-3.2" sec-type="FIXME">
+  <label>3.2</label>
+<title>time</title><p>mark attributed to an instant  (3.4) or a time interval  (3.6) on a specified time scale  (3.5)</p><p>Note 1 to entry: The term &#x201C;time&#x201D; is often used in common language. However, it should only be used if the meaning is clearly visible from the context.</p><p>Note 2 to entry: On a time scale consisting of successive time intervals, such as a clock system  (5.1) or calendar system  (6.1), distinct instants may be expressed by the same time.</p><p>Note 3 to entry: This definition corresponds with the definition of the term &#x201C;date&#x201D; in IEC 60050-113:2011, 113-01-12.</p></sec><sec id="sub-3.2.1" sec-type="FIXME">
+  <label>3.2.1</label>
+<title>proper time</title><p>time  (3.2) on a proper time scale  (4.1)</p><p>Note 1 to entry: See ITU-R TF.2018-0 and the BIPM SI Brochure[9] for additional information.</p></sec><sec id="sub-3.2.2" sec-type="FIXME">
+  <label>3.2.2</label>
+<title>coordinate time</title><p>time on a coordinate time scale  (4.2)</p><p>Note 1 to entry: Coordinate time is a mathematical coordinate in the four-dimensional space-time of the coordinate system. For a given event, the coordinate time has the same value everywhere.</p><p>Note 2 to entry: Coordinate times are not measured; rather, they are computed from the proper times  (3.2.1) of clocks.</p><p>Note 3 to entry: The relation between coordinate time and proper time depends on the clock&#x2019;s position and state of motion in its gravitational environment and is derived by integration of the space-time interval.</p><p>Note 4 to entry: See ITU-R TF.2018-0 and BIPM SI Brochure[9] for additional information.</p></sec><sec id="sub-3.3" sec-type="FIXME">
+  <label>3.3</label>
+<title>time axis</title><p>mathematical representation of the succession in time according to the space-time reference of instantaneous events along a unique axis</p><p>Note 1 to entry: According to the theory of special relativity, the time axis depends on the choice of a spatial reference frame.</p><p>Note 2 to entry: In IEC 60050-113:2011, 113-01-03, time according to the space-time reference is defined to be the one-dimensional subspace of space-time, locally orthogonal to space.</p></sec><sec id="sub-3.4" sec-type="FIXME">
+  <label>3.4</label>
+<title>instant</title><p>point on the time axis  (3.3)</p><p>Note 1 to entry: An instantaneous event occurs at a specific instant.</p></sec><sec id="sub-3.5" sec-type="FIXME">
+  <label>3.5</label>
+<title>time scale</title><title>timescale</title><p>system of ordered marks which can be attributed to instants  (3.4) on the time axis  (3.3), one instant being chosen as the origin</p><p>Note 1 to entry: The system of ordered marks may be of the following nature: continuous, continuous with discontinuities, in successive steps, or discrete.</p><p>Note 2 to entry: The definition, notes to entry and EXAMPLEs are derived from IEC 60050-113:2011, 113-01-11, &#x201C;timescale&#x201D;.</p></sec><sec id="sub-3.6" sec-type="FIXME">
+  <label>3.6</label>
+<title>time interval</title><p>part of the time axis  (3.3) limited by two instants  (3.4)</p><p>Note 1 to entry: Unless otherwise stated, a time interval is by default a closed time interval  (3.6.1), which includes the limiting instants themselves.</p></sec><sec id="sub-3.6.1" sec-type="FIXME">
+  <label>3.6.1</label>
+<title>closed time interval</title><title>[a,b]</title><p>time interval  (3.6) that includes both the beginning instant  (3.4) and the final instant</p></sec><sec id="sub-3.6.2" sec-type="FIXME">
+  <label>3.6.2</label>
+<title>open time interval</title><title>(a,b)</title><p>time interval  (3.6) that does not include either the beginning instant  (3.4) or the final instant</p></sec><sec id="sub-3.6.3" sec-type="FIXME">
+  <label>3.6.3</label>
+<title>right half-open time interval</title><title>contiguous time interval</title><title>[a,b)</title><p>time interval  (3.6) that includes the beginning instant  (3.4) but not the final instant</p></sec><sec id="sub-3.6.4" sec-type="FIXME">
+  <label>3.6.4</label>
+<title>left half-open time interval</title><title>(a,b]</title><p>time interval  (3.6) that includes the final instant  (3.4) but not the beginning instant</p></sec><sec id="sub-3.6.5" sec-type="FIXME">
+  <label>3.6.5</label>
+<title>recurring time interval</title><p>series of consecutive time intervals  (3.6) of identical duration  (3.7)</p><p>Note 1 to entry: If the duration of the time intervals is measured in calendar system  (6.1) entities, the duration of each time interval depends on the calendar dates  (7.8) of its start and its end.</p><p>Note 2 to entry: If the starting instants  (3.4) of time intervals are repeated according to a set of rules, the &#x201C;repeat rules for recurring time intervals&#x201D; in ISO 8601-2:2019, Clause 5 apply.</p></sec><sec id="sub-3.7" sec-type="FIXME">
+  <label>3.7</label>
+<title>duration</title><p>non-negative quantity attributed to a time interval  (3.6), the value of which is equal to the difference between the quantitative times of the final instant  (3.4) and the initial instant of the time interval</p><p>Note 1 to entry: Duration is one of the base quantities in the International System of Quantities (ISQ) on which SI is based. The term &#x201C;time&#x201D; instead of &#x201C;duration&#x201D; is often used in this context and also for an infinitesimal duration.</p><p>Note 2 to entry: For the term &#x201C;duration&#x201D;, expressions such as &#x201C;time&#x201D; or &#x201C;time interval&#x201D; are often used, but the term &#x201C;time&#x201D; is not recommended in this sense and the term &#x201C;time interval&#x201D; is deprecated in this sense to avoid confusion with the concept of &#x201C;time interval&#x201D;.</p><p>Note 3 to entry: The exact duration of a time scale unit  (7.1) depends on the time scale  (3.5) used. For example, the durations of a year, month, week, day, hour, or minute, may depend on when they occur (e.g. in a Gregorian calendar, a calendar month  (7.21) can have a duration of 28, 29, 30, or 31 days; in a 24-hour clock system  (5.2), a clock minute  (7.5) can have a duration of 59, 60, or 61 seconds). Therefore, the exact duration of a time scale unit can only be evaluated if the exact duration of each composing element is known.</p><p>Note 4 to entry: The SI unit of duration is second  (7.2). Time scale units derived from the SI second  (7.2) are acceptable for use with the SI, namely, minute  (7.4) (1 min = 60 s), hour  (7.6) (1 h = 60 min = 3 600 s) and day  (7.11) (1 d = 24 h = 86 400 s). These time invariant units are used for the scales of a stopwatch with an additional scale for the number of days, if applicable.</p><p>Note 5 to entry: Realizations of the SI-second-derived units on time intervals and the differences between SI-derived units and the calendar or clock units are used to handle duration changes such as those due to leap seconds  (4.8) and discontinuities such as those caused by the periodic changing of offsets from UTC  (4.7) during the year. By equating clock day  (7.12) to calendar day  (7.13), this sequence can be continued by calendar day to calendar year  (7.23), hence allowing UTC and its time shifts  (3.9) to be used in a continuous manner within calendar time scales.</p><p>Note 6 to entry: This definition is closely related to NOTE 1 of &#x201C;duration&#x201D; in IEC 60050-113:2011, 113-01-13.</p></sec><sec id="sub-3.7.1" sec-type="FIXME">
+  <label>3.7.1</label>
+<title>negative duration</title><p>duration  (3.7) in the reverse direction to the proceeding time scale  (3.5)</p></sec><sec id="sub-3.8" sec-type="FIXME">
+  <label>3.8</label>
+<title>time of day</title><p>time  (3.2) occurring within a calendar day  (7.13)</p><p>Note 1 to entry: Generally, time of day relates to the duration  (3.7) elapsed after the beginning of the day. However, this correlation breaks when changes occur in the time scale  (3.5) that applies to the time of day, such as time shifts  (3.9) and leap seconds  (4.8).</p><p>Note 2 to entry: This definition corresponds closely with the definition of &#x201C;clock time&#x201D; given in IEC 60050-113:2011, 113-01-18, except that the concepts of duration and time scale are not used in this definition.</p></sec><sec id="sub-3.8.1" sec-type="FIXME">
+  <label>3.8.1</label>
+<title>basis time of day</title><p>time of day  (3.8) in a basis time scale  (4.3)</p></sec><sec id="sub-3.8.2" sec-type="FIXME">
+  <label>3.8.2</label>
+<title>UTC of day</title><p>time of day  (3.8) in UTC  (4.7)</p></sec><sec id="sub-3.8.3" sec-type="FIXME">
+  <label>3.8.3</label>
+<title>local time of day</title><p>time of day  (3.8) in a local time  (4.6)</p></sec><sec id="sub-3.9" sec-type="FIXME">
+  <label>3.9</label>
+<title>time shift</title><p>difference between the marks attributed to the same instant  (3.4) between times  (3.2) of two time scales  (3.5)</p></sec><sec id="sub-3.10" sec-type="FIXME">
+  <label>3.10</label>
+<title>equation of time</title><p>difference between mean solar time and apparent solar time, which varies with time within a calendar year  (7.23)</p><p>Note 1 to entry: A wall clock, for instance, is a type of device that indicates mean solar time, while a sundial is a type of device that indicates apparent solar time.</p></sec></sec>
+    <sec id="sub-4" sec-type="FIXME">
+  <label>4</label>
+<title>4   Terms related to time scales</title><sec id="sub-4.1" sec-type="FIXME">
+  <label>4.1</label>
+<title>proper time scale</title><p>time scale  (3.5) produced by a continuously running primary frequency standard not compensated for gravitational frequency shift</p><p>Note 1 to entry: An ideal clock, which exactly realizes the SI second  (7.2), is a clock system  (5.1) that is a proper time scale.</p><p>Note 2 to entry: This definition is derived from ITU-R TF.2018-0.</p></sec><sec id="sub-4.2" sec-type="FIXME">
+  <label>4.2</label>
+<title>coordinate time scale</title><p>time scale  (3.5) independent of the equations of motion of material bodies and in the equations of propagation of electromagnetic waves</p><p>Note 1 to entry: This definition is derived from ITU-R TF.2018-0.</p></sec><sec id="sub-4.3" sec-type="FIXME">
+  <label>4.3</label>
+<title>basis time scale</title><p>time scale  (3.5) established to serve as reference time by a competent authority</p><p>Note 1 to entry: UTC is the recommended basis time scale for all civil and scientific applications.</p><p>Note 2 to entry: The local time  (4.6) in a location is often defined as UTC plus a certain time shift  (3.9), but not necessarily in all.</p></sec><sec id="sub-4.4" sec-type="FIXME">
+  <label>4.4</label>
+<title>standard time</title><p>time scale  (3.5) derived from a basis time scale  (4.3) with a time shift  (3.9) established by a competent authority</p><p>Note 1 to entry: The time shift of a standard time may vary in the course of a year, as decided by the competent authority, e.g. for introducing daylight saving time.</p><p>Note 2 to entry: The local time  (4.6) may switch between different standard times for administrative reasons, for instance, a regulatory decision to adopt a different standard time.</p><p>Note 3 to entry: Many standard times use UTC  (4.7) as their basis and are often associated with a geographical location.</p><p>Note 4 to entry: This definition corresponds closely to, but is more general than, the definition of the term &#x201C;standard time&#x201D; in IEC 60050-113:2011, 113-01-17.</p></sec><sec id="sub-4.5" sec-type="FIXME">
+  <label>4.5</label>
+<title>adjusted time</title><p>time scale  (3.5) derived from a basis time scale  (4.3) with a time shift  (3.9), established by a competent authority that also defines a standard time  (4.4)</p></sec><sec id="sub-4.6" sec-type="FIXME">
+  <label>4.6</label>
+<title>local time</title><title>local time scale</title><p>time scale  (3.5) applied locally of either a standard time  (4.4) or adjusted time  (4.5), as decided by a competent authority</p></sec><sec id="sub-4.7" sec-type="FIXME">
+  <label>4.7</label>
+<title>UTC</title><title>Coordinated Universal Time</title><p>time scale  (3.5) produced by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM) with the same rate as TAI  (4.9), but differing from TAI only by an integral number of seconds  (7.2)</p><p>Note 1 to entry: UTC is the only recommended time scale as basis time scale  (4.3) and the basis of local time  (4.6) in most countries.</p><p>Note 2 to entry: Access to UTC is obtained through local real-time realizations maintained by laboratories contributing data to the calculation of UTC, identified by .</p><p>Note 3 to entry: The International Earth Rotation and Reference Systems Service (IERS) decides on the insertion of leap seconds  (4.8) in UTC and thus on the integer second offset from TAI.</p></sec><sec id="sub-4.8" sec-type="FIXME">
+  <label>4.8</label>
+<title>leap second</title><p>intentional time step of one second  (7.2) to adjust UTC  (4.7) to ensure approximate agreement with UT1  (4.10), a time scale  (3.5) based on the rotation of the Earth</p><p>Note 1 to entry: An inserted second is called a positive leap second and an omitted second is called a negative leap second. A positive leap second is inserted after [23:59:59Z] and is represented as [23:59:60Z], where the last second of that minute represented as [23:59:60Z]. A negative leap second is achieved by the omission of [23:59:59Z], where the last second of that minute represented as [23:59:58Z]. Insertion or omission takes place as determined by the International Earth Rotation and Reference Systems Service (IERS), normally on 30 June or 31 December, but if necessary on 31 March or 30 September.</p><p>Note 2 to entry: See also ITU-R TF.460-6.</p></sec><sec id="sub-4.9" sec-type="FIXME">
+  <label>4.9</label>
+<title>TAI</title><title>International Atomic Time</title><p>continuous time scale  (3.5) produced by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM) based on the best realizations of the SI second  (7.2)</p><p>Note 1 to entry: TAI is a realization of TT  (4.12) with nominally the same rate as that of TT. In other words, TT is a concept, while TAI is a realized time scale.</p></sec><sec id="sub-4.10" sec-type="FIXME">
+  <label>4.10</label>
+<title>UT1</title><title>Universal Time</title><p>time scale  (3.5) defined by the International Astronomical Union (IAU) with reference to a fixed point on the moving equator, corresponding to the Earth rotation angle  (4.11)</p><p>Note 1 to entry: This definition is derived from IAU Resolution B1.8 (2000)[6]: Definition and use of Celestial and Terrestrial Ephemeris Origins.</p><p>Note 2 to entry: Precise values as well as predicted values of UT1 are obtained through the publication of DUT1 () by the International Earth Rotation and Reference Systems Service (IERS).</p></sec><sec id="sub-4.11" sec-type="FIXME">
+  <label>4.11</label>
+<title>Earth rotation angle</title><p>angle measured along the equator of the CIP between the unit vectors directed toward the CEO (Celestial Ephemeris Origin) and the TEO (Terrestrial Ephemeris Origin)</p><p>Note 1 to entry: The Earth&#x2019;s rotation is monitored by different means, such as VLBI, tracking of GNSS satellites and Satellite-Laser-Ranging. Data are collected and evaluated by the International Earth Rotation and Reference Systems Service (IERS).</p></sec><sec id="sub-4.12" sec-type="FIXME">
+  <label>4.12</label>
+<title>TT</title><title>Terrestrial Time</title><p>time scale  (3.5) differing from TCG  (4.13) by a constant rate , where is a defining constant</p><p>Note 1 to entry: In the definition, tTT represents TT and tTCG represents TCG.</p></sec><sec id="sub-4.13" sec-type="FIXME">
+  <label>4.13</label>
+<title>TCG</title><title>Geocentric Coordinate Time</title><p>time  (3.2) coordinate of the Geocentric Reference System defined by the International Astronomical Union (IAU)</p></sec></sec>
+    <sec id="sub-5" sec-type="FIXME">
+  <label>5</label>
+<title>5   Terms related to clock systems</title><sec id="sub-5.1" sec-type="FIXME">
+  <label>5.1</label>
+<title>clock system</title><title>clock</title><p>time scale  (3.5) suited for intra-day time measurements</p><p>Note 1 to entry: Clock second  (7.3), clock minute  (7.5) and clock hour  (7.7) are often time scale units  (7.1) included in a clock system.</p><p>Note 2 to entry: The document uses the term &#x201C;clock system&#x201D; to distinguish a clock system from a clock instance that someone may place on their desk.</p></sec><sec id="sub-5.2" sec-type="FIXME">
+  <label>5.2</label>
+<title>24-hour clock system</title><title>24-hour clock</title><title>24 h clock</title><p>clock system  (5.1) that subdivides a calendar day  (7.13) into 24 clock hours  (7.7) with marks cyclically assigned</p><p>Note 1 to entry: UTC  (4.7) forms the basis of today&#x2019;s 24-hour clock systems and is often used as a type of 24-hour clock system.</p><p>Note 2 to entry: The clock day  (7.12) of the 24-hour clock system is 24 hours, with each mark having a one-to-one correspondence with marks in the 12-hour clock system  (5.3).</p></sec><sec id="sub-5.3" sec-type="FIXME">
+  <label>5.3</label>
+<title>12-hour clock system</title><title>12-hour clock</title><title>12 h clock</title><p>clock system  (5.1) that divides a calendar day  (7.13) into two periods that are each subdivided into 12 clock hours  (7.7), with marks cyclically assigned per period</p><p>Note 1 to entry: The two periods of the 12-hour clock system are typically represented using the labels &#x201C;a.m.&#x201D; and &#x201C;p.m.&#x201D; with historical and geographical variations.</p><p>Note 2 to entry: The clock day  (7.12) of the 12-hour clock system is 24 hours, with each mark having a one-to-one correspondence with marks in the 24-hour clock system  (5.2).</p></sec></sec>
+    <sec id="sub-6" sec-type="FIXME">
+  <label>6</label>
+<title>6   Terms related to calendar systems</title><sec id="sub-6.1" sec-type="FIXME">
+  <label>6.1</label>
+<title>calendar system</title><title>calendar</title><p>time scale  (3.5) that uses the time scale unit  (7.1) of calendar day  (7.13) as its basic unit</p><p>Note 1 to entry: Calendar month  (7.21), calendar year  (7.23), calendar day are time scale units often included in a calendar system.</p><p>Note 2 to entry: The document uses the term &#x201C;calendar system&#x201D; to distinguish a calendar system from a calendar instance that someone may hang on their wall.</p><p>Note 3 to entry: Calendar systems are defined by various authorities. Usage of particular calendar systems at a point in time or geographic location may be driven by culture or regulations.</p></sec><sec id="sub-6.2" sec-type="FIXME">
+  <label>6.2</label>
+<title>proleptic calendar system</title><title>proleptic calendar</title><p>calendar system  (6.1) derived by extending an underlying calendar system to time preceding its first epoch  (7.32)</p></sec><sec id="sub-6.3" sec-type="FIXME">
+  <label>6.3</label>
+<title>week calendar</title><p>calendar system  (6.1) that uses the calendar week  (7.18) as its basic unit and based on an unbounded series of contiguous calendar weeks</p></sec><sec id="sub-6.4" sec-type="FIXME">
+  <label>6.4</label>
+<title>sub-year grouping</title><p>grouping composed of time scale unit  (7.1) of a lower order than the calendar year  (7.23) time scale unit</p></sec><sec id="sub-6.4.1" sec-type="FIXME">
+  <label>6.4.1</label>
+<title>normal sub-year grouping</title><p>sub-year grouping  (6.4) where the durations  (3.7) of its elements sum up to the duration of one calendar year</p><p>Note 1 to entry: A normal sub-year grouping can be composed of time scale units with different durations.</p></sec><sec id="sub-6.5" sec-type="FIXME">
+  <label>6.5</label>
+<title>season</title><p>element of a normal sub-year grouping  (6.4.1), amongst which the transition between each element can be based on calendrical, meteorological, astronomical, solar or ecological events</p></sec><sec id="sub-6.6" sec-type="FIXME">
+  <label>6.6</label>
+<title>tropical year</title><title>solar year</title><p>time  (3.2) taken for the Earth to make one revolution around the Sun, as measured by the Sun&#x2019;s position as observed from the Earth</p><p>Note 1 to entry: The tropical year is commonly the time between two successive equivalent equinoxes or solstices, which is also the time interval  (3.6) required for the ecliptic longitude of the Sun to increase 360 degrees with respect to the Earth.</p><p>Note 2 to entry: The tropical year differs from the sidereal year  (6.7) due to the precession of the equinoxes.</p></sec><sec id="sub-6.7" sec-type="FIXME">
+  <label>6.7</label>
+<title>sidereal year</title><p>time  (3.2) taken for the Earth to make one revolution around the Sun, as measured by the Sun&#x2019;s position as observed with respect to the fixed stars</p><p>Note 1 to entry: The sidereal year differs from the tropical year  (6.6) due to the precession of the equinoxes.</p></sec><sec id="sub-6.8" sec-type="FIXME">
+  <label>6.8</label>
+<title>sidereal month</title><p>time  (3.2) taken for the Moon to make one revolution around the Earth, as measured by the Earth&#x2019;s position as observed with respect to the fixed stars</p></sec><sec id="sub-6.9" sec-type="FIXME">
+  <label>6.9</label>
+<title>synodic month</title><title>lunar month</title><title>lunation</title><p>time  (3.2) taken between two successive new moons or full moons, a full cycle of the phases of the Moon, which is the time taken for the Moon to return to the same syzygy (the approximately linear configurations of the Sun and Earth), in conjunction or opposition</p><p>Note 1 to entry: The exact length of each synodic month varies because the orbit of the Moon is elliptical.</p></sec><sec id="sub-6.10" sec-type="FIXME">
+  <label>6.10</label>
+<title>solar day</title><p>time interval  (3.6) separating two passages of the Sun over the meridian, due to rotation of the Earth</p><p>Note 1 to entry: The duration  (3.7) of each solar day approximates 24 hours in the 24-hour clock system  (5.2), but is not equivalent to the duration of the calendar day  (7.13) due to variability in rotation of the Earth.</p><p>Note 2 to entry: The solar day is a variable concept as location approaches the poles of the Earth.</p></sec><sec id="sub-6.11" sec-type="FIXME">
+  <label>6.11</label>
+<title>tropical solar calendar</title><p>calendar system  (6.1) organising days based on a tropical year  (6.6)</p></sec><sec id="sub-6.12" sec-type="FIXME">
+  <label>6.12</label>
+<title>sidereal solar calendar</title><p>calendar system  (6.1) of organising days based on a sidereal year  (6.7)</p></sec><sec id="sub-6.13" sec-type="FIXME">
+  <label>6.13</label>
+<title>lunar calendar</title><p>calendar system  (6.1) of organising days based on the phases of the Moon</p></sec><sec id="sub-6.14" sec-type="FIXME">
+  <label>6.14</label>
+<title>tropical lunisolar calendar</title><p>calendar system  (6.1) of organising days based on the phases of the Moon, but aligned to a tropical solar calendar  (6.11) using intercalation  (6.16) rules</p></sec><sec id="sub-6.15" sec-type="FIXME">
+  <label>6.15</label>
+<title>sidereal lunisolar calendar</title><p>calendar system  (6.1) of organising days based on the phases of the Moon, but aligned to a sidereal solar calendar  (6.12) using intercalation  (6.16) rules</p></sec><sec id="sub-6.16" sec-type="FIXME">
+  <label>6.16</label>
+<title>intercalation</title><p>offset or alteration of an element of a calendar system  (6.1) with respect to the other elements within that calendar system to re-align the repeating patterns of a calendar system with events</p></sec></sec>
+    <sec id="sub-7" sec-type="FIXME">
+  <label>7</label>
+<title>7   Terms related to time scale units</title><sec id="sub-7.1" sec-type="FIXME">
+  <label>7.1</label>
+<title>time scale unit</title><p>unit of measurement of a duration  (3.7)</p></sec><sec id="sub-7.2" sec-type="FIXME">
+  <label>7.2</label>
+<title>second</title><title>SI second</title><title>s</title><p>base unit of duration  (3.7) measurement in the International System of Units (SI)</p><p>Note 1 to entry: As defined by the General Conference on Weights and Measures (Conf&#xE9;rence G&#xE9;n&#xE9;rale des Poids et Mesures, CGPM) on the proposal of the International Committee of Weights and Measures (Comit&#xE9; International des Poids et Mesures, CIPM).</p><p>Note 2 to entry: See also ISO 80000-3.</p></sec><sec id="sub-7.3" sec-type="FIXME">
+  <label>7.3</label>
+<title>clock second</title><title>calendar second</title><p>time scale unit  (7.1) whose duration  (3.7) represents one second  (7.2) within the defined clock system  (5.1)</p><p>Note 1 to entry: Clock second is in common parlance often referred to as second, however in this document clock second and second have different definitions.</p><p>Note 2 to entry: Different specific clock seconds within clock systems and calendar systems  (6.1) may have different lengths, as measured in SI seconds  (7.2) (e.g. where leap seconds  (4.8) occur). For instance, some information systems implement &#x201C;smear seconds&#x201D; that distributes the duration of a leap second over a longer time interval  (3.6) by extending the duration of clock seconds within that time interval, in order to keep the quantity of clock seconds unchanged.</p></sec><sec id="sub-7.4" sec-type="FIXME">
+  <label>7.4</label>
+<title>minute</title><title>min</title><p>duration  (3.7) of 60 seconds  (7.2)</p><p>Note 1 to entry: See also ISO 80000-3.</p></sec><sec id="sub-7.5" sec-type="FIXME">
+  <label>7.5</label>
+<title>clock minute</title><title>calendar minute</title><p>time scale unit  (7.1) whose duration  (3.7) represents one minute  (7.4) within the defined clock system  (5.1)</p><p>Note 1 to entry: Clock minute is in common parlance often referred to as minute, however in this document clock minute and minute have different definitions.</p><p>Note 2 to entry: Different specific clock minutes within clock systems and calendar systems  (6.1) may have different lengths, as measured in SI seconds  (7.2) (e.g. where leap seconds occur).</p><p>Note 3 to entry: In the UTC  (4.7) clock system, the duration of a minute is 60 seconds except if modified by the insertion or deletion of a leap second  (4.8).</p></sec><sec id="sub-7.6" sec-type="FIXME">
+  <label>7.6</label>
+<title>hour</title><title>h</title><p>duration  (3.7) of 60 minutes  (7.4)</p><p>Note 1 to entry: See also ISO 80000-3.</p></sec><sec id="sub-7.7" sec-type="FIXME">
+  <label>7.7</label>
+<title>clock hour</title><title>calendar hour</title><p>time scale unit  (7.1) whose duration  (3.7) represents one hour  (7.6) within the defined clock system  (5.1)</p><p>Note 1 to entry: Clock hour is in common parlance often referred to as hour, however in this document clock hour and hour have different definitions.</p><p>Note 2 to entry: Different specific clock hours within clock systems and calendar systems  (6.1) may have different lengths, as measured in SI seconds  (7.2) (e.g. where leap seconds occur).</p></sec><sec id="sub-7.8" sec-type="FIXME">
+  <label>7.8</label>
+<title>calendar date</title><p>particular calendar day  (7.13) represented by its calendar year  (7.23), its calendar month  (7.21) and its calendar day of month  (7.15)</p></sec><sec id="sub-7.9" sec-type="FIXME">
+  <label>7.9</label>
+<title>ordinal date</title><p>particular calendar day  (7.13) represented by its calendar year  (7.23) and its calendar day of year  (7.16)</p></sec><sec id="sub-7.10" sec-type="FIXME">
+  <label>7.10</label>
+<title>week date</title><p>particular calendar day  (7.13) represented by its calendar year  (7.23) to which its calendar week  (7.18) belongs, its calendar week of year  (7.19) and its calendar day of week  (7.14)</p></sec><sec id="sub-7.11" sec-type="FIXME">
+  <label>7.11</label>
+<title>day</title><p>duration  (3.7) of a calendar day  (7.13)</p><p>Note 1 to entry: The term &#x201C;day&#x201D; applies also to the duration of any time interval  (3.6) which starts at a certain time of day  (3.8) on a certain calendar day and ends at the same time of day on the next calendar day.</p><p>Note 2 to entry: See also ISO 80000-3.</p></sec><sec id="sub-7.12" sec-type="FIXME">
+  <label>7.12</label>
+<title>clock day</title><p>time scale unit  (7.1) whose duration  (3.7) represents that of a calendar day  (7.13) within the defined clock system  (5.1)</p><p>Note 1 to entry: Some clock systems are cyclic, while others are monotonic. For instance, a clock day in the 24-hour clock system is represented by a single measurement cycle.</p><p>Note 2 to entry: A clock day in the 24-hour clock system represents 86 400 seconds except when modified, for instance, by insertion of leap seconds.</p><p>Note 3 to entry: The insertion or deletion of time intervals as may be prescribed by local authorities do not modify clock day. The reason being that the duration of a clock day is only dependent on the underlying clock system, therefore the clock day of two clock systems that operate at different time shifts  (3.9) are identical.</p></sec><sec id="sub-7.13" sec-type="FIXME">
+  <label>7.13</label>
+<title>calendar day</title><p>time scale unit  (7.1) starting at the beginning of the day and ending with the beginning of the next day within the defined calendar system  (6.1)</p><p>Note 1 to entry: Calendar day is in common parlance often referred to as day, however in this document calendar day and day have different definitions.</p><p>Note 2 to entry: The beginning of the next day in the definition refers to the starting instant  (3.4) of the next calendar day.</p><p>Note 3 to entry: The duration  (3.7) of a calendar day using the 24-hour clock system  (5.2) is 24 hours  (7.6); except if modified by: &#x2014; the insertion or deletion of leap seconds  (4.8), by decision of the International Earth Rotation and Reference Systems Service (IERS); or&#x2014; the insertion or deletion of other time intervals  (3.6), as may be prescribed by local authorities to alter the time scale  (3.5) of local time  (4.6).<list>
+  <list-item>
+    <label>&#x2014;</label>
+    <p>the insertion or deletion of</p>
+  </list-item>
+  <list-item>
+    <label>&#x2014;</label>
+    <p>the insertion or deletion of other</p>
+  </list-item>
+</list></p></sec><sec id="sub-7.14" sec-type="FIXME">
+  <label>7.14</label>
+<title>calendar day of week</title><p>identified calendar day  (7.13) amongst the sequence of days within a calendar week  (7.18)</p><p>Note 1 to entry: Days in a calendar week are often named or identified by its ordinal number, depending on the week calendar  (6.3).</p></sec><sec id="sub-7.15" sec-type="FIXME">
+  <label>7.15</label>
+<title>calendar day of month</title><p>ordinal number of a calendar day  (7.13) within a calendar month  (7.21)</p></sec><sec id="sub-7.16" sec-type="FIXME">
+  <label>7.16</label>
+<title>calendar day of year</title><p>ordinal number of a calendar day  (7.13) within a calendar year  (7.23)</p></sec><sec id="sub-7.17" sec-type="FIXME">
+  <label>7.17</label>
+<title>week</title><p>duration  (3.7) of a calendar week  (7.18)</p><p>Note 1 to entry: The term &#x201C;week&#x201D; applies also to the duration of any time interval  (3.6) which starts at a certain time of day  (3.8) at a certain calendar day of week  (7.14) and ends at the same time of day at the same calendar day of week in the next calendar week.</p></sec><sec id="sub-7.18" sec-type="FIXME">
+  <label>7.18</label>
+<title>calendar week</title><p>time scale unit  (7.1) composed of a fixed sequence of calendar days  (7.13)</p><p>Note 1 to entry: The calendar week is the basic time scale unit of a week calendar  (6.3).</p></sec><sec id="sub-7.19" sec-type="FIXME">
+  <label>7.19</label>
+<title>calendar week of year</title><p>ordinal number of a calendar week  (7.18) within a calendar year  (7.23) in a week calendar  (6.3)</p></sec><sec id="sub-7.20" sec-type="FIXME">
+  <label>7.20</label>
+<title>month</title><p>duration  (3.7) of a calendar month  (7.21)</p><p>Note 1 to entry: The term &#x201C;month&#x201D; applies also to the duration of any time interval  (3.6) which starts at a certain time of day  (3.8) at a certain calendar day  (7.13) of the calendar month and ends at the same time of day at the same calendar day of the next calendar month, if it exists.</p><p>Note 2 to entry: In certain applications a month is considered as a duration of 30 calendar days, but such usage is not supported by this document.</p></sec><sec id="sub-7.21" sec-type="FIXME">
+  <label>7.21</label>
+<title>calendar month</title><p>time scale unit  (7.1) resulting from a defined division of a calendar year  (7.23), each containing a specific number of calendar days  (7.13)</p><p>Note 1 to entry: A calendar month is in common parlance often referred to as month, however in this document calendar month and month have different definitions.</p></sec><sec id="sub-7.22" sec-type="FIXME">
+  <label>7.22</label>
+<title>year</title><p>duration  (3.7) of a calendar year  (7.23)</p><p>Note 1 to entry: In the Gregorian calendar, a year has 365 or 366 days  (7.11). The duration is 366 days if the corresponding time interval  (3.6) begins February 28 or earlier in a leap year or March 2 or later in a year immediately preceding a leap year. If the interval begins February 29 (on a leap year), or March 1 of a year preceding a leap year, the end date has to be agreed on. Otherwise the duration is 365 days.</p><p>Note 2 to entry: The term &#x201C;year&#x201D; applies also to the duration of any time interval which starts at a certain time of day  (3.8) at a certain calendar date  (7.8) of the calendar year and ends at the same time of day at the same calendar date of the next calendar year with the exception noted in note 1 to entry.</p></sec><sec id="sub-7.23" sec-type="FIXME">
+  <label>7.23</label>
+<title>calendar year</title><p>time scale unit  (7.1) defined by the calendar system  (6.1)</p></sec><sec id="sub-7.24" sec-type="FIXME">
+  <label>7.24</label>
+<title>decade</title><p>time scale unit  (7.1) of 10 calendar years  (7.23), beginning with a year whose year number is divisible without remainder by ten</p><p>Note 1 to entry: Decade is also used to refer to an arbitrary duration  (3.7) of 10 years; however decade is not used as such in this document.</p></sec><sec id="sub-7.25" sec-type="FIXME">
+  <label>7.25</label>
+<title>century</title><p>time scale unit  (7.1) of 100 calendar years  (7.23)duration  (3.7), beginning with a year whose year number is divisible without remainder by 100</p><p>Note 1 to entry: Century is also used to refer to an arbitrary duration of 100 years; however century is not used as such in this document.</p></sec><sec id="sub-7.26" sec-type="FIXME">
+  <label>7.26</label>
+<title>millennium</title><p>time scale unit  (7.1) of 1000 calendar years  (7.23)duration  (3.7), beginning with a year whose year number is divisible without remainder by 1 000</p><p>Note 1 to entry: Millennium is also used to refer to an arbitrary duration of 1 000 years; however millennium is not used as such in this document.</p></sec><sec id="sub-7.27" sec-type="FIXME">
+  <label>7.27</label>
+<title>calendar era</title><p>named sequence of time intervals  (3.6) used in a calendar system  (6.1) defined by an epoch  (7.32)</p><p>Note 1 to entry: Calendar eras do not necessarily form a contiguous or non-overlapping sequence.</p><p>Note 2 to entry: A calendar era typically references a time interval of more than one year, but could also reference a time interval shorter than one year.</p></sec><sec id="sub-7.28" sec-type="FIXME">
+  <label>7.28</label>
+<title>calendar era year</title><p>representation to a calendar year  (7.23) located within a calendar era  (7.27)</p></sec><sec id="sub-7.29" sec-type="FIXME">
+  <label>7.29</label>
+<title>epoch</title><p>instant  (3.4) in time  (3.2) chosen as the origin of a calendar era  (7.27)</p></sec><sec id="sub-7.30" sec-type="FIXME">
+  <label>7.30</label>
+<title>epoch</title><p>&lt;computing&gt; time  (3.2) at which the representation is zero</p></sec><sec id="sub-7.31" sec-type="FIXME">
+  <label>7.31</label>
+<title>epoch</title><p>&lt;astronomy&gt; reference time used for consistency in calculation of positions and orbits</p></sec><sec id="sub-7.32" sec-type="FIXME">
+  <label>7.32</label>
+<title>epoch</title><p>&lt;geochronology&gt; named time interval  (3.6), typically in the order of tens of millions of years</p></sec><sec id="sub-7.33" sec-type="FIXME">
+  <label>7.33</label>
+<title>approximate date</title><p>calendar date  (7.8) which is an estimate whose value is asserted to be possibly correct</p><p>Note 1 to entry: The degree of confidence in approximation depends on the application.</p></sec><sec id="sub-7.34" sec-type="FIXME">
+  <label>7.34</label>
+<title>uncertain date</title><p>calendar date  (7.8) whose source is considered dubious</p></sec><sec id="sub-7.35" sec-type="FIXME">
+  <label>7.35</label>
+<title>date with unspecified part</title><p>calendar date  (7.8) of which a part is unstated</p><p>Note 1 to entry: The unstated part can be year  (7.22), year and month  (7.20), month, month and day  (7.11), or year and day. It is unstated because it has not (yet) been assigned (it can be assigned in the future), or because it is classified, or unknown, or for any other reason.</p></sec><sec id="sub-7.36" sec-type="FIXME">
+  <label>7.36</label>
+<title>movable day</title><p>repeatedly occurring calendar date  (7.8) in a calendar system  (6.1) that is represented by criteria set by one or more selection rules  (8.10), but does not always resolve to a fixed calendar date in every repeating cycle</p><p>Note 1 to entry: The selection of this term pays homage to the phrase &#x201C;movable feast&#x201D; used in some calendar systems to indicate the rule-based determination of annual events.</p></sec></sec>
+    <sec id="sub-8" sec-type="FIXME">
+  <label>8</label>
+<title>8   Terms related to expressions and representations</title><sec id="sub-8.1" sec-type="FIXME">
+  <label>8.1</label>
+<title>date and time expression</title><p>expression indicating a time  (3.2), time interval  (3.6) or recurring time interval  (3.6.5)</p></sec><sec id="sub-8.2" sec-type="FIXME">
+  <label>8.2</label>
+<title>date and time representation</title><p>representation of the format of one or more date and time expressions  (8.1)</p></sec><sec id="sub-8.3" sec-type="FIXME">
+  <label>8.3</label>
+<title>time scale component</title><p>representation of a time scale unit  (7.1) within a date and time expression  (8.1) or a date and time representation  (8.2)</p><p>Note 1 to entry: A time scale component is considered of a higher order of another, if the time scale unit it represents has a strictly larger time interval  (3.6) than that of that another; the latter time scale component is therefore considered to be of a lower order.</p><p>Note 2 to entry: Common usage of this term often omits the leading phrase &#x201C;time scale&#x201D;, such as representing a &#x201C;time scale component calendar year&#x201D; by just &#x201C;calendar year component&#x201D;. This usage is deemed accepted in this document.</p></sec><sec id="sub-8.4" sec-type="FIXME">
+  <label>8.4</label>
+<title>complete representation</title><p>date and time representation  (8.2) that includes all the time scale components  (8.3) associated with the date and time expression  (8.1)</p></sec><sec id="sub-8.5" sec-type="FIXME">
+  <label>8.5</label>
+<title>feature</title><p>single function or group of functions</p></sec><sec id="sub-8.6" sec-type="FIXME">
+  <label>8.6</label>
+<title>conformity level</title><p>value assigned to a subset of features  (8.5) within a profile  (8.7)</p><p>Note 1 to entry: A profile may refer to these conformity levels to facilitate the specification of conformance to the profile.</p></sec><sec id="sub-8.7" sec-type="FIXME">
+  <label>8.7</label>
+<title>profile</title><p>subset of features  (8.5) described in a standard or a set of standards</p><p>Note 1 to entry: A community may develop a profile to describe how to carry out functions or apply features specified in a standard or family of standards in a manner relevant to that community.</p><p>Note 2 to entry: A profile often describes what features are to be supported and how to apply those features. In cases where multiple methods are allowed for a required feature, a profile may select a single method. In cases where a particular function allows different interpretations, a profile may select a single interpretation or provide clarification. A profile may list out features that need not be supported. It may specify several conformity levels  (8.6).</p></sec><sec id="sub-8.8" sec-type="FIXME">
+  <label>8.8</label>
+<title>ISO 8601 profile</title><p>profile  (8.7) whose base standard is the ISO 8601 series</p></sec><sec id="sub-8.9" sec-type="FIXME">
+  <label>8.9</label>
+<title>repeat rule</title><p>set of eligible time intervals  (8.12) and selection rules  (8.10) that allows computation of a set of matching instants  (8.13)</p></sec><sec id="sub-8.10" sec-type="FIXME">
+  <label>8.10</label>
+<title>selection rule</title><p>rule specifying restrictions on the value of a time scale component  (8.3)</p></sec><sec id="sub-8.11" sec-type="FIXME">
+  <label>8.11</label>
+<title>repeat cycle</title><p>set of repeating instants  (3.4), calculated by a specified start instant and specified duration  (3.7) gap between the repeating instants</p></sec><sec id="sub-8.12" sec-type="FIXME">
+  <label>8.12</label>
+<title>eligible time interval</title><p>time interval  (3.6) eligible for matching using selection rules  (8.10)</p></sec><sec id="sub-8.13" sec-type="FIXME">
+  <label>8.13</label>
+<title>matching instant</title><p>instant  (3.4) that fulfils criteria set by specified selection rule  (8.10) computed by a repeat rule  (8.9) that belongs within an eligible time interval  (8.12)</p></sec><sec id="sub-8.14" sec-type="FIXME">
+  <label>8.14</label>
+<title>date time formula</title><p>expression that specifies modification of a date and time expression  (8.1) with a duration  (3.7)</p></sec><sec id="sub-8.15" sec-type="FIXME">
+  <label>8.15</label>
+<title>durational component</title><p>time scale component  (8.3) that composes the duration  (3.7)date and time representation  (8.2)</p></sec><sec id="sub-8.16" sec-type="FIXME">
+  <label>8.16</label>
+<title>grouped time scale component</title><p>time scale component  (8.3) composed of a duration  (3.7) expressed by one or more durational component  (8.15)</p></sec></sec>
+  </body>
+</standard>
