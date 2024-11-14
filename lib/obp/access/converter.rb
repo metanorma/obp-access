@@ -1,20 +1,17 @@
-require_relative "converter/base"
-
 module Obp
   module Access
     class Converter
-      attr_reader :urn, :source, :document
+      attr_reader :urn, :source
 
       def initialize(urn:, source:)
         @urn = urn
         @source = source
-        @document = Sections::Root.new(urn:).to_document
       end
 
       def to_xml
-        nodes.map { |node| Converter.render_sections(document:, node:) }
+        rendered = Rendered.new(urn:, nodes:)
+        xml_output = rendered.to_xml
 
-        xml_output = document.root.to_xml
         pp xml_output
       end
 
@@ -23,7 +20,7 @@ module Obp
       def nodes
         html = source.gsub(/[[:space:]]/, " ") # Convert NBSP to spaces from html
         doc = Nokogiri::HTML(html)
-        doc.css("body > div.sts-standard > div.sts-section") # Find all direct sections from HTML
+        doc.css("body > div.sts-standard").children
       end
     end
   end
