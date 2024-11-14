@@ -1,10 +1,10 @@
 module Obp
   module Access
-    class Converter
+    class Rendered
       class Elements
         class Title < Base
-          def match_node?
-            node.name == "h1" && node.attr("class") == "sts-sec-title"
+          def self.selector
+            "h1.sts-sec-title, div.sts-tbx-term"
           end
 
           def content

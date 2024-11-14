@@ -1,7 +1,7 @@
 module Obp
   module Access
-    class Converter
-      class Sections
+    class Rendered
+      class Elements
         class Base
           attr_reader :document, :node
 
@@ -19,11 +19,12 @@ module Obp
           end
 
           def render(target:)
+            # We can force document target using Element#target method
             document.at(target || self.target).add_child(to_xml)
           end
 
           def match_node?
-            raise NotImplementedError
+            node.matches?(self.class.selector)
           end
 
           def content

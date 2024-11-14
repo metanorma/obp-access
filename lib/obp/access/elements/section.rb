@@ -1,10 +1,15 @@
 module Obp
   module Access
-    class Converter
-      class Sections
+    class Rendered
+      class Elements
         class Section < Base
+          def self.selector
+            "div.sts-section"
+          end
+
           def match_node?
-            id =~ /\A\d+(\.\d+)?\z/
+            # Section ids finishes with an integer or decimal
+            super && id =~ /\A\d+(\.\d+)*\z/
           end
 
           def target
@@ -16,8 +21,6 @@ module Obp
               # FIXME: Can't determine 'sec-type' attr from HTML
               xml.sec(id: "sub-#{id}", "sec-type": "FIXME") do
                 xml.label id
-
-                Converter.render_elements(node:, xml:)
               end
             end
           end

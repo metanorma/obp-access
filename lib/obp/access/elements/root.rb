@@ -1,7 +1,7 @@
 module Obp
   module Access
-    class Converter
-      class Sections
+    class Rendered
+      class Elements
         class Root
           attr_reader :urn
 

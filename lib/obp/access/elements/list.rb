@@ -1,10 +1,10 @@
 module Obp
   module Access
-    class Converter
+    class Rendered
       class Elements
         class List < Base
-          def match_node?
-            node.name == "div" && node.attr("class") == "list"
+          def self.selector
+            "div.list"
           end
 
           def content
