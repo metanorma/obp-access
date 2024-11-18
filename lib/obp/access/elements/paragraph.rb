@@ -3,8 +3,8 @@ module Obp
     class Rendered
       class Elements
         class Paragraph < Base
-          def self.selector
-            "div.sts-p, div.sts-tbx-def, div.sts-tbx-note"
+          def self.classes
+            %w[sts-p]
           end
 
           def match_node?

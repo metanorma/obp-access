@@ -3,8 +3,8 @@ module Obp
     class Rendered
       class Elements
         class Title < Base
-          def self.selector
-            "h1.sts-sec-title, div.sts-tbx-term"
+          def self.classes
+            %w[sts-sec-title]
           end
 
           def content

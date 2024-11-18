@@ -1,10 +1,3 @@
-require "optparse"
-require "net/http"
-require "nokogiri"
-require "json"
-require "yaml"
-require "fileutils"
-
 module Obp
   module Access
     class Parser
@@ -129,7 +122,8 @@ module Obp
 
       def convert_html_to_xml
         html = @state.filter_map { |attr| attr["htmlContent"] }.first
-        Converter.new(urn: options[:urn], source: html).to_xml
+        converter = Converter.new(urn: options[:urn], source: html)
+        converter.to_xml
       end
     end
   end

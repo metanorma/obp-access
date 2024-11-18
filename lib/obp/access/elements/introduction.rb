@@ -3,22 +3,22 @@ module Obp
     class Rendered
       class Elements
         class Introduction < Base
-          def self.selector
-            "div.sts-section"
+          def self.classes
+            %w[sts-section]
           end
 
           def match_node?
-            # Section introduction ids finishes with "intro"
-            super && id == "intro"
+            # Section foreword & introduction ids finishes with "foreword" & "intro"
+            super && (id == "foreword" || id == "intro")
           end
 
           def target
-            :front
+            "front"
           end
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.sec("sec-type": "intro", "specific-use": "introduction.int", id: "introduction.int")
+              xml.sec(id: "sec_#{id}", "sec-type": id)
             end
           end
         end

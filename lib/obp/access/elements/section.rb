@@ -3,8 +3,8 @@ module Obp
     class Rendered
       class Elements
         class Section < Base
-          def self.selector
-            "div.sts-section"
+          def self.classes
+            %w[sts-section]
           end
 
           def match_node?
@@ -13,13 +13,13 @@ module Obp
           end
 
           def target
-            :body
+            "body"
           end
 
           def content
             Nokogiri::XML::Builder.new do |xml|
               # FIXME: Can't determine 'sec-type' attr from HTML
-              xml.sec(id: "sub-#{id}", "sec-type": "FIXME") do
+              xml.sec(id: "sec_#{id}") do
                 xml.label id
               end
             end
