@@ -22,6 +22,7 @@ module Obp
         puts "[obp-access] writing output..."
 
         xml_content = convert_html_to_xml
+        xml_content = pretty_print_xml(xml_content) # FIXME: Remove pretty printing
         file_path = File.join(options[:output], "#{options[:urn]}.xml")
         File.write(file_path, xml_content)
 
@@ -124,6 +125,11 @@ module Obp
         html = @state.filter_map { |attr| attr["htmlContent"] }.first
         converter = Converter.new(urn: options[:urn], source: html)
         converter.to_xml
+      end
+
+      def pretty_print_xml(xml_content)
+        doc = Nokogiri::XML(xml_content, &:noblanks)
+        doc.root.to_xml
       end
     end
   end
