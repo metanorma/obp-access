@@ -5,6 +5,10 @@ require_relative "elements/section"
 require_relative "elements/list"
 require_relative "elements/title"
 require_relative "elements/paragraph"
+require_relative "elements/terminology"
+require_relative "elements/terminology/definition"
+require_relative "elements/terminology/note"
+require_relative "elements/terminology/tig"
 
 module Obp
   module Access
@@ -25,7 +29,7 @@ module Obp
       private
 
       def render(node:, target: nil)
-        return unless node.matches?(selectors)
+        return unless css_classes_match?(node)
 
         elements.map do |descendant|
           element = descendant.new(document:, node:)
@@ -47,8 +51,12 @@ module Obp
         @elements ||= ObjectSpace.each_object(Class).select { |klass| klass < Elements::Base }
       end
 
-      def selectors
-        @selectors ||= elements.map(&:selector).uniq.join(", ")
+      def classes
+        @classes ||= elements.map(&:classes)
+      end
+
+      def css_classes_match?(node)
+        classes.any?(node.classes)
       end
     end
   end

@@ -20,11 +20,12 @@ module Obp
 
           def render(target:)
             # We can force document target using Element#target method
-            document.at(target || self.target).add_child(to_xml)
+            target = "#{target}#{self.target}" if defined?(self.target)
+            document.at(target).add_child(to_xml)
           end
 
           def match_node?
-            node.matches?(self.class.selector)
+            node.classes == self.class.classes
           end
 
           def content
