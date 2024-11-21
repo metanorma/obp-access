@@ -14,7 +14,7 @@ module Obp
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.p node.content.strip
+              xml.p { xml << sanitize_text(node.inner_html) } # Force xml tags generation rather than html escaping
             end
           end
         end

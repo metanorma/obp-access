@@ -2,14 +2,18 @@ module Obp
   module Access
     class Rendered
       class Elements
-        class Title < Base
+        class Copyright < Base
           def self.classes
-            %w[sts-sec-title]
+            %w[sts-copyright]
+          end
+
+          def target
+            "front/std-meta/permissions"
           end
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.title sanitize_text(node.content.strip)
+              xml.send(:"copyright-year", node.content.scan(/\d+/).first)
             end
           end
         end

@@ -10,6 +10,18 @@ module Obp
             @node = node
           end
 
+          def match_node?
+            node.classes == self.class.classes
+          end
+
+          def render(target:)
+            target = self.target if defined?(self.target) # We can force document target using Element#target method
+            target = "#{target}#{path_suffix}" if defined?(path_suffix)
+            document.at(target).add_child(to_xml)
+          end
+
+          private
+
           def id
             @id ||= node.attr("id").split("_").last
           end
@@ -18,18 +30,15 @@ module Obp
             content.doc.root.to_xml
           end
 
-          def render(target:)
-            # We can force document target using Element#target method
-            target = "#{target}#{self.target}" if defined?(self.target)
-            document.at(target).add_child(to_xml)
-          end
-
-          def match_node?
-            node.classes == self.class.classes
-          end
-
           def content
             raise NotImplementedError
+          end
+
+          def sanitize_text(text)
+            text
+              .gsub(/[[:space:]]+/, " ") # Remove duplicated spaces
+              .gsub("<b>", "<bold>").gsub("</b>", "</bold>")
+              .gsub("<i>", "<italic>").gsub("</i>", "</italic>")
           end
         end
       end

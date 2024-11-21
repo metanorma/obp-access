@@ -3,18 +3,9 @@ module Obp
     class Rendered
       class Elements
         class Terminology
-          class Tig < Base
+          class TigAdmitted < Tig
             def self.classes
-              %w[sts-tbx-term]
-            end
-
-            def id
-              # The ID is attached to the section, not this div
-              node.parent.at_css("div.sts-tbx-label").text.strip
-            end
-
-            def index
-              node.path.match(/\[(\d+)\](?=\z)/)[1].to_i - 1
+              %w[sts-tbx-term admittedTerm]
             end
 
             def content
@@ -23,6 +14,7 @@ module Obp
                   term, part_of_speech = tbx_category(node)
                   xml.send(:"tbx:term") { xml << term } # Force xml tags generation rather than html escaping
                   xml.send(:"tbx:partOfSpeech", value: part_of_speech)
+                  xml.send(:"tbx:normativeAuthorization", value: "admittedTerm")
                 end
               end
             end
