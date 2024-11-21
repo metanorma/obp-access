@@ -123,13 +123,14 @@ module Obp
 
       def convert_html_to_xml
         html = @state.filter_map { |attr| attr["htmlContent"] }.first
-        converter = Converter.new(urn: options[:urn], source: html)
+        metas = @state.filter_map { |attr| attr["tabs"] }.first.last
+        converter = Converter.new(urn: options[:urn], metas:, source: html)
         converter.to_xml
       end
 
       def pretty_print_xml(xml_content)
         doc = Nokogiri::XML(xml_content, &:noblanks)
-        doc.root.to_xml
+        doc.to_xml
       end
     end
   end

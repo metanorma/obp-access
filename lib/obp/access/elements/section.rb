@@ -18,7 +18,6 @@ module Obp
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              # FIXME: Can't determine 'sec-type' attr from HTML
               xml.sec(id: "sec_#{id}") do
                 xml.label id
               end

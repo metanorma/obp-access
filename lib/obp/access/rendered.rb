@@ -5,25 +5,32 @@ require_relative "elements/section"
 require_relative "elements/list"
 require_relative "elements/title"
 require_relative "elements/paragraph"
+require_relative "elements/copyright"
+require_relative "elements/bibliography"
 require_relative "elements/terminology"
+require_relative "elements/terminology/base"
 require_relative "elements/terminology/definition"
 require_relative "elements/terminology/note"
 require_relative "elements/terminology/tig"
+require_relative "elements/terminology/tig_admitted"
+require_relative "elements/terminology/example"
+require_relative "elements/terminology/source"
 
 module Obp
   module Access
     class Rendered
-      attr_reader :urn, :nodes, :document
+      attr_reader :urn, :metas, :nodes, :document
 
-      def initialize(urn:, nodes:)
+      def initialize(urn:, metas:, nodes:)
         @urn = urn
+        @metas = metas
         @nodes = nodes
-        @document = Elements::Root.new(urn:).to_document
+        @document = Elements::Root.new(urn:, metas:).to_document
       end
 
       def to_xml
         nodes.map { |node| render(node:) }
-        document.root.to_xml
+        document.to_xml
       end
 
       private
@@ -52,7 +59,7 @@ module Obp
       end
 
       def classes
-        @classes ||= elements.map(&:classes)
+        @classes ||= elements.filter_map(&:classes).uniq
       end
 
       def css_classes_match?(node)

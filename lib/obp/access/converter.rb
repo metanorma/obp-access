@@ -1,15 +1,16 @@
 module Obp
   module Access
     class Converter
-      attr_reader :urn, :source
+      attr_reader :urn, :metas, :source
 
-      def initialize(urn:, source:)
+      def initialize(urn:, metas:, source:)
         @urn = urn
+        @metas = metas
         @source = source
       end
 
       def to_xml
-        rendered = Rendered.new(urn:, nodes:)
+        rendered = Rendered.new(urn:, metas:, nodes:)
         rendered.to_xml
       end
 
