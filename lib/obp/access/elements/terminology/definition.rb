@@ -8,6 +8,10 @@ module Obp
               %w[sts-tbx-def]
             end
 
+            def insert_using
+              :prepend_child # In this XML, order matters. This node needs to appear before tbx:tig
+            end
+
             def content
               Nokogiri::XML::Builder.new do |xml|
                 xml.send(:"tbx:definition") do

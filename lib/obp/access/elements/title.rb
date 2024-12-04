@@ -7,6 +7,10 @@ module Obp
             %w[sts-sec-title]
           end
 
+          def insert_using
+            :prepend_child # In this XML, order matters. This node needs to appear at the top of the XML section
+          end
+
           def content
             Nokogiri::XML::Builder.new do |xml|
               xml.title sanitize_text(node.content)

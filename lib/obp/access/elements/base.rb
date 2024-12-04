@@ -17,7 +17,7 @@ module Obp
           def render(target:)
             target = self.target if defined?(self.target) # We can force document target using Element#target method
             target = "#{target}#{path_suffix}" if defined?(path_suffix)
-            document.at(target).add_child(to_xml)
+            document.at(target).send(insert_using, to_xml)
           end
 
           private
@@ -32,6 +32,10 @@ module Obp
 
           def content
             raise NotImplementedError
+          end
+
+          def insert_using
+            :add_child # By default, child node is appended to the XML. Can force prepended per node
           end
 
           def sanitize_text(text)
