@@ -36,7 +36,6 @@ module Obp
 
           def sanitize_text(text)
             text
-              .gsub(/[[:space:]]+/, " ") # Remove duplicated spaces
               .gsub("<b>", "<bold>").gsub("</b>", "</bold>")
               .gsub("<i>", "<italic>").gsub("</i>", "</italic>")
           end

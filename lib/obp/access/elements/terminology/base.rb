@@ -19,7 +19,7 @@ module Obp
                   xml << sanitize_text(children.text)
                 end
               else
-                xml.text(children.content) # Do not strip content here
+                xml.text(children.content)
               end
             end
 

@@ -9,7 +9,7 @@ module Obp
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.title sanitize_text(node.content.strip)
+              xml.title sanitize_text(node.content)
             end
           end
         end

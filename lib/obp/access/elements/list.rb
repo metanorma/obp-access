@@ -18,8 +18,8 @@ module Obp
                     p = label.next
 
                     # FIXME: Re-use Elements classes for labels & paragraphs
-                    xml.label label.content.strip
-                    xml.p p.content.strip
+                    xml.label label.content
+                    xml.p p.content
                   end
                 end
               end
