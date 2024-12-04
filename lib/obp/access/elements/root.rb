@@ -23,6 +23,9 @@ module Obp
                       xml.send(:"copyright-holder", holder)
                     end
                     xml.send(:"title-wrap", "xml:lang": language) do
+                      xml.intro intro_title if intro_title
+                      xml.main main_title if main_title
+                      xml.compl compl_title if compl_title
                       xml.full title
                     end
                     xml.send(:"proj-id", ref_undated)
@@ -46,6 +49,18 @@ module Obp
 
           def holder
             metas["caption"].split.first
+          end
+
+          def intro_title
+            @intro_title ||= title.split("—")[0]&.strip
+          end
+
+          def main_title
+            @main_title ||= title.split("—")[1]&.strip
+          end
+
+          def compl_title
+            @compl_title ||= title.split("—")[2]&.strip
           end
 
           def title
