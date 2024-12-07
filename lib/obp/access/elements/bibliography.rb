@@ -60,7 +60,7 @@ module Obp
                 xml.title children.children[2].content
               elsif title
                 xml.send(:"std-ref", children.children[0].content)
-                xml.title title
+                xml.title children.children[1].content
               else
                 xml << children.inner_html
               end

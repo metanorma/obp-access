@@ -14,7 +14,7 @@ module Obp
             end
 
             def index
-              node.path.match(/\[(\d+)\](?=\z)/)[1].to_i - 1
+              node.path.match(/\[(\d+)\](?=\z)/)[1].to_i - 1 # Extract index from xpath
             end
 
             def content

@@ -11,3 +11,4 @@ Gemfile.lock
 .idea/
 obp-access-*.gem
 .rubocop-https---raw-githubusercontent-com-riboseinc-oss-guides-master-ci-rubocop-yml
+.rspec_status
