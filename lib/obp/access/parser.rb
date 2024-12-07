@@ -1,10 +1,3 @@
-require "optparse"
-require "net/http"
-require "nokogiri"
-require "json"
-require "yaml"
-require "fileutils"
-
 module Obp
   module Access
     class Parser
@@ -28,12 +21,12 @@ module Obp
 
         puts "[obp-access] writing output..."
 
-        prepare_output_folders
-        write_metadata
-        write_images_and_patch_links
-        write_page_html
+        xml_content = convert_html_to_xml
+        xml_content = pretty_print_xml(xml_content) # FIXME: Remove pretty printing
+        file_path = File.join(options[:output], "#{options[:urn]}.xml")
+        File.write(file_path, xml_content)
 
-        puts "[obp-access] output written to `#{options[:output]}/`"
+        puts "[obp-access] output written to `#{file_path}`"
       end
 
       private
@@ -126,6 +119,18 @@ module Obp
         image_url = "#{BASE_URL}#{image_href}"
 
         Net::HTTP.get_response(URI(image_url)).body
+      end
+
+      def convert_html_to_xml
+        html = @state.filter_map { |attr| attr["htmlContent"] }.first
+        metas = @state.filter_map { |attr| attr["tabs"] }.first.last
+        converter = Converter.new(urn: options[:urn], metas:, source: html)
+        converter.to_xml
+      end
+
+      def pretty_print_xml(xml_content)
+        doc = Nokogiri::XML(xml_content, &:noblanks)
+        doc.to_xml
       end
     end
   end

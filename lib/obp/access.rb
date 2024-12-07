@@ -1,4 +1,12 @@
 require "obp/access/parser"
+require "obp/access/converter"
+require "obp/access/rendered"
+require "optparse"
+require "net/http"
+require "nokogiri"
+require "json"
+require "yaml"
+require "fileutils"
 
 module Obp
   module Access
