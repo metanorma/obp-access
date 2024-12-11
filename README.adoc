@@ -28,9 +28,11 @@ There are many situations where the informative content is already useful:
 
 === Usage
 
-[source,sh]
+[source,ruby]
 ----
-bundle exec exe/obp-access -o output iso:std:iso:5598:ed-3:v1:en
+obp = Obp::Access.fetch("iso:std:iso:...") # => #<Obp::Access::Parser @urn="iso:std:iso:...">
+obp.to_xml(pretty: true) # => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>..."
+obp.to_sts # => #<Sts::NisoSts::Standard>
 ----
 
 == Credits
