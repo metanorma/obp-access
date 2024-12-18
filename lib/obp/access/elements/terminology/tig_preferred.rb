@@ -3,9 +3,9 @@ module Obp
     class Renderer
       class Elements
         class Terminology
-          class TigAdmitted < Tig
+          class TigPreferred < Tig
             def self.classes
-              %w[sts-tbx-term admittedTerm]
+              %w[sts-tbx-term preferredTerm]
             end
 
             def content
@@ -14,7 +14,7 @@ module Obp
                   term, part_of_speech = tbx_category(node)
                   xml.send(:"tbx:term") { xml << term } # Force xml tags generation rather than html escaping
                   xml.send(:"tbx:partOfSpeech", value: part_of_speech)
-                  xml.send(:"tbx:normativeAuthorization", value: "admittedTerm")
+                  xml.send(:"tbx:normativeAuthorization", value: "preferredTerm")
                 end
               end
             end
