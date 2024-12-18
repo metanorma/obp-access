@@ -18,7 +18,7 @@ require_relative "elements/terminology/source"
 
 module Obp
   module Access
-    class Rendered
+    class Renderer
       attr_reader :urn, :metas, :nodes, :document
 
       def initialize(urn:, metas:, nodes:)
