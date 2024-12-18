@@ -13,6 +13,7 @@ require_relative "elements/terminology/definition"
 require_relative "elements/terminology/note"
 require_relative "elements/terminology/tig"
 require_relative "elements/terminology/tig_admitted"
+require_relative "elements/terminology/tig_preferred"
 require_relative "elements/terminology/example"
 require_relative "elements/terminology/source"
 
