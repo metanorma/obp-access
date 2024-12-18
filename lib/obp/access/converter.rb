@@ -10,7 +10,7 @@ module Obp
       end
 
       def to_xml
-        rendered = Rendered.new(urn:, metas:, nodes:)
+        rendered = Renderer.new(urn:, metas:, nodes:)
         rendered.to_xml
       end
 
