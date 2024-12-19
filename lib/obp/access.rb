@@ -1,6 +1,6 @@
 require "obp/access/parser"
 require "obp/access/converter"
-require "obp/access/rendered"
+require "obp/access/renderer"
 require "obp/access/version"
 
 module Obp

@@ -1,6 +1,6 @@
 module Obp
   module Access
-    class Rendered
+    class Renderer
       class Elements
         class Section < Base
           def self.classes

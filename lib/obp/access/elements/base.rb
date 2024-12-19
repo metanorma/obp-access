@@ -1,12 +1,14 @@
 module Obp
   module Access
-    class Rendered
+    class Renderer
       class Elements
         class Base
-          attr_reader :document, :node
+          # Elements are rendered using the NISO STS spec here: https://www.niso-sts.org/TagLibrary/niso-sts-TL-1-2-html/index.html
+          attr_reader :document, :language, :node
 
-          def initialize(document:, node:)
+          def initialize(document:, language:, node:)
             @document = document
+            @language = language
             @node = node
           end
 

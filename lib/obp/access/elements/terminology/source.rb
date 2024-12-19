@@ -19,7 +19,7 @@
 # </tbx:source>
 module Obp
   module Access
-    class Rendered
+    class Renderer
       class Elements
         class Terminology
           class Source < Base
