@@ -58,7 +58,7 @@ module Obp
                 xml.send(:"std-ref", href.content)
                 text = children.children[2] ? children.children[1].content : children.children[0].content
                 title = children.children[2] ? children.children[2].content : children.children[1].content
-                xml << "<text>#{text}</text>" # xml.text is a reserved method
+                xml << text
                 xml.title title
               elsif title
                 xml.send(:"std-ref", children.children[0].content)
