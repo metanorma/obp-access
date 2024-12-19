@@ -20,13 +20,14 @@ require_relative "elements/terminology/source"
 module Obp
   module Access
     class Renderer
-      attr_reader :urn, :metas, :nodes, :document
+      attr_reader :urn, :metas, :nodes, :document, :language
 
       def initialize(urn:, metas:, nodes:)
         @urn = urn
         @metas = metas
         @nodes = nodes
         @document = Elements::Root.new(urn:, metas:).to_document
+        @language = metas["language"]
       end
 
       def to_xml
@@ -40,7 +41,7 @@ module Obp
         return unless css_classes_match?(node)
 
         elements.map do |descendant|
-          element = descendant.new(document:, node:)
+          element = descendant.new(document:, language:, node:)
           next unless element.match_node?
 
           xml = element.render(target:)
