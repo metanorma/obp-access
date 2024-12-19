@@ -22,14 +22,9 @@ module Obp
                       xml.send(:"copyright-statement", "All rights reserved")
                       xml.send(:"copyright-holder", holder)
                     end
-                    xml.send(:"title-wrap", "xml:lang": language) do
-                      xml.intro intro_title if intro_title
-                      xml.main main_title if main_title
-                      xml.compl compl_title if compl_title
-                      xml.full title
-                    end
+                    render_titles(xml)
                     xml.send(:"proj-id", ref_undated)
-                    xml.send(:"content-language", language)
+                    xml.send(:"content-language", metas["language"])
                     xml.send(:"std-ref", ref_dated, type: "dated")
                     xml.send(:"std-ref", ref_undated, type: "undated")
                     xml.send(:"doc-ref", ref)
@@ -51,26 +46,6 @@ module Obp
             metas["caption"].split.first
           end
 
-          def intro_title
-            @intro_title ||= title.split("—")[0]&.strip
-          end
-
-          def main_title
-            @main_title ||= title.split("—")[1]&.strip
-          end
-
-          def compl_title
-            @compl_title ||= title.split("—")[2]&.strip
-          end
-
-          def title
-            metas["description"]
-          end
-
-          def language
-            @language ||= metas["caption"].scan(/\((.*?)\)/).first&.first
-          end
-
           def ref
             metas["caption"]
           end
@@ -81,6 +56,17 @@ module Obp
 
           def ref_undated
             @ref_undated ||= metas["caption"].split(":").first
+          end
+
+          def render_titles(xml)
+            metas["titles"].each do |language, title|
+              xml.send(:"title-wrap", "xml:lang": language) do
+                split = title.split("—")
+                elements = %w[intro main compl]
+                elements.each_with_index { |e, i| xml.send(e, split[i].strip) if split[i] }
+                xml.full title
+              end
+            end
           end
         end
       end
