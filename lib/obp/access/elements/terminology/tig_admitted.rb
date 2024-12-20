@@ -1,6 +1,6 @@
 module Obp
   module Access
-    class Rendered
+    class Renderer
       class Elements
         class Terminology
           class TigAdmitted < Tig
