@@ -2,6 +2,7 @@ require_relative "elements/base"
 require_relative "elements/root"
 require_relative "elements/introduction"
 require_relative "elements/section"
+require_relative "elements/figure"
 require_relative "elements/list"
 require_relative "elements/title"
 require_relative "elements/paragraph"
@@ -13,19 +14,21 @@ require_relative "elements/terminology/definition"
 require_relative "elements/terminology/note"
 require_relative "elements/terminology/tig"
 require_relative "elements/terminology/tig_admitted"
+require_relative "elements/terminology/tig_preferred"
 require_relative "elements/terminology/example"
 require_relative "elements/terminology/source"
 
 module Obp
   module Access
-    class Rendered
-      attr_reader :urn, :metas, :nodes, :document
+    class Renderer
+      attr_reader :urn, :metas, :nodes, :document, :language
 
       def initialize(urn:, metas:, nodes:)
         @urn = urn
         @metas = metas
         @nodes = nodes
         @document = Elements::Root.new(urn:, metas:).to_document
+        @language = metas["language"]
       end
 
       def to_xml
@@ -39,7 +42,7 @@ module Obp
         return unless css_classes_match?(node)
 
         elements.map do |descendant|
-          element = descendant.new(document:, node:)
+          element = descendant.new(document:, language:, node:)
           next unless element.match_node?
 
           xml = element.render(target:)

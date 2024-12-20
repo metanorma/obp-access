@@ -18,7 +18,7 @@ module Obp
                 xml.send(:"tbx:entailedTerm", target: "term_#{target}") do
                   xml << sanitize_text(children.text)
                 end
-              else
+              elsif children.is_a?(Nokogiri::XML::Text)
                 xml.text(children.content)
               end
             end
