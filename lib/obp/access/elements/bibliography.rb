@@ -22,7 +22,7 @@
 # </ref>
 module Obp
   module Access
-    class Rendered
+    class Renderer
       class Elements
         class Bibliography < Base
           def self.classes
