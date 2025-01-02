@@ -28,7 +28,7 @@ module Obp
           end
 
           def caption
-            @caption ||= node.at_css(".sts-caption-caption")&.content
+            @caption ||= node.at_css(".sts-caption")&.content
           end
         end
       end
