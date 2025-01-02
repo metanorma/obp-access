@@ -1,8 +1,3 @@
-require "net/http"
-require "nokogiri"
-require "json"
-require "sts"
-
 module Obp
   class Access
     class Parser
@@ -39,6 +34,7 @@ module Obp
         @xml ||= begin
           metas = {
             "titles" => titles,
+            "images" => images,
             "language" => language,
           }
           metas.merge! state.filter_map { |attr| attr["tabs"] }.first.last
@@ -60,13 +56,18 @@ module Obp
         languages = get_languages_from_html
         languages = [language] if languages.empty?
 
-        languages.to_h do |key|
+        # Parallelize translated titles fetching to speed up process
+        Parallel.map(languages) do |key|
           if key == language
             [key, title]
           else
             [key, Parser.new(urn: "#{base_urn}:#{key}", directory:).title]
           end
-        end
+        end.to_h
+      end
+
+      def images
+        Imager.new(html:, directory:).images
       end
 
       def load_ui_response
