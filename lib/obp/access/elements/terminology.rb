@@ -12,7 +12,7 @@ module Obp
               xml.send(:"term-sec", id: "sec_#{id}") do
                 xml.label id
                 xml.send(:"tbx:termEntry", id: "term_#{id}") do
-                  xml.send(:"tbx:langSet", "xml:lang": language)
+                  xml.send(:"tbx:langSet", "xml:lang": metas["language"])
                 end
               end
             end
