@@ -3,6 +3,7 @@ require_relative "elements/root"
 require_relative "elements/introduction"
 require_relative "elements/section"
 require_relative "elements/figure"
+require_relative "elements/figure_group"
 require_relative "elements/list"
 require_relative "elements/table_wrap"
 require_relative "elements/title"
@@ -50,6 +51,7 @@ module Obp
           section_path = xml.first.path
 
           node.children.each do |children_node|
+            # Recursively render children on actual xml section path
             render(node: children_node, target: section_path)
           end
 
@@ -66,6 +68,7 @@ module Obp
         @classes ||= elements.filter_map(&:classes).uniq
       end
 
+      # Using Nokogiri ancestors node matching isn't good for performance, so just basic css classes matching is enough
       def css_classes_match?(node)
         classes.any?(node.classes)
       end

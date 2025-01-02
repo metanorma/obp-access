@@ -7,22 +7,27 @@ module Obp
             %w[sts-fig]
           end
 
+          def match_node?
+            # Figure contains only one img in the same div.sts-fig, otherwise it's a fig-group
+            super && node.css("img").count == 1
+          end
+
           def content
             Nokogiri::XML::Builder.new do |xml|
               xml.fig do
-                xml.label node.at_css(".sts-caption-label").content
-                xml.caption do
-                  xml.title node.at_css(".sts-caption-title").content
-                end
-                xml.graphic("xlink:href": image) # TODO: How to render image?
+                render_figure(xml, node)
               end
             end
           end
 
           private
 
-          def image
-            node.at_css("img").attr("src")
+          def render_figure(xml, children)
+            xml.label children.at(".sts-caption-label").content
+            xml.caption do
+              xml.title children.at(".sts-caption-title").content
+            end
+            xml.graphic("xlink:href": children.at("img").attr("src"))
           end
         end
       end
