@@ -18,7 +18,7 @@
 #   Resolution 2, modified – Note 1 to entry has been expanded upon for clarity.
 # </tbx:source>
 module Obp
-  module Access
+  class Access
     class Renderer
       class Elements
         class Terminology

@@ -1,5 +1,5 @@
 module Obp
-  module Access
+  class Access
     class Renderer
       class Elements
         class Title < Base

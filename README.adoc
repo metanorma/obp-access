@@ -30,7 +30,7 @@ There are many situations where the informative content is already useful:
 
 [source,ruby]
 ----
-obp = Obp::Access.fetch("iso:std:iso:...") # => #<Obp::Access::Parser @urn="iso:std:iso:...">
+obp = Obp::Access.fetch("iso:std:iso:...") # => #<Obp::Access @urn="iso:std:iso:...">
 obp.to_xml(pretty: true) # => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>..."
 obp.to_sts # => #<Sts::NisoSts::Standard>
 ----

@@ -4,34 +4,19 @@ require "json"
 require "sts"
 
 module Obp
-  module Access
+  class Access
     class Parser
-      BASE_URL = "https://www.iso.org".freeze
-      API_URL = "#{BASE_URL}/obp/ui".freeze
+      attr_reader :urn, :directory, :language, :base_urn
 
-      IMAGE_FOLDER = "images".freeze
-
-      attr_reader :urn, :language, :base_urn
-
-      def initialize(urn)
+      def initialize(urn:, directory:)
         @urn = urn
+        @directory = directory
         @language = urn.split(":").last
-        @base_urn = urn.split(":")[0...-1].join(":")
+        @base_urn = urn.split(":")[0...-1].join(":") # urn without the language part
       end
 
-      def to_xml(pretty: false)
-        pretty ? pretty_print_xml(xml) : xml
-      end
-
-      def to_sts
-        Sts::NisoSts::Standard.from_xml(xml)
-      end
-
-      def to_xml_file
-        file = Tempfile.new([urn, ".xml"])
-        file.write(pretty_print_xml(xml))
-        file.close
-        file.path
+      def to_xml
+        xml
       end
 
       def title
@@ -51,7 +36,15 @@ module Obp
       end
 
       def xml
-        @xml ||= convert_html_to_xml
+        @xml ||= begin
+          metas = {
+            "titles" => titles,
+            "language" => language,
+          }
+          metas.merge! state.filter_map { |attr| attr["tabs"] }.first.last
+          converter = Converter.new(urn:, metas:, source: html)
+          converter.to_xml
+        end
       end
 
       def html
@@ -63,19 +56,15 @@ module Obp
         end
       end
 
-      def languages
-        @languages ||= begin
-          languages = get_languages_from_html
-          languages.empty? ? [language] : languages
-        end
-      end
-
       def titles
-        @titles ||= languages.to_h do |key|
+        languages = get_languages_from_html
+        languages = [language] if languages.empty?
+
+        languages.to_h do |key|
           if key == language
             [key, title]
           else
-            [key, Parser.new("#{base_urn}:#{key}").title]
+            [key, Parser.new(urn: "#{base_urn}:#{key}", directory:).title]
           end
         end
       end
@@ -95,38 +84,6 @@ module Obp
           .select { |attr| !attr["caption"]&.empty? && attr["styles"]&.include?("toggle") }
           .map { |attr| attr["caption"] }.uniq
       end
-
-      def convert_html_to_xml
-        metas = state.filter_map { |attr| attr["tabs"] }.first.last
-        metas["titles"] = titles
-        metas["language"] = language
-        converter = Converter.new(urn:, metas:, source: html)
-        converter.to_xml
-      end
-
-      def pretty_print_xml(xml_content)
-        doc = Nokogiri::XML(xml_content, &:noblanks)
-        doc.to_xml
-      end
-
-      # def write_images_and_patch_links
-      #   images = page.xpath("//div[contains(@class, 'sts-standard')]//img")
-      #   images.each do |img|
-      #     filename = File.basename(img["src"])
-      #     subpath = "#{IMAGE_FOLDER}/#{filename}"
-      #
-      #     image_blob = load_image_blob(img["src"])
-      #     File.write("#{options[:output]}/#{subpath}", image_blob, mode: "wb")
-      #
-      #     img["src"] = subpath
-      #   end
-      # end
-      #
-      # def load_image_blob(image_href)
-      #   image_url = "#{BASE_URL}#{image_href}"
-      #
-      #   Net::HTTP.get_response(URI(image_url)).body
-      # end
     end
   end
 end
