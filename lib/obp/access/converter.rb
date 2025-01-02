@@ -1,5 +1,5 @@
 module Obp
-  module Access
+  class Access
     class Converter
       attr_reader :urn, :metas, :source
 
