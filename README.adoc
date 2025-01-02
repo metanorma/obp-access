@@ -33,6 +33,7 @@ There are many situations where the informative content is already useful:
 obp = Obp::Access.fetch("iso:std:iso:...") # => #<Obp::Access @urn="iso:std:iso:...">
 obp.to_xml(pretty: true) # => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>..."
 obp.to_sts # => #<Sts::NisoSts::Standard>
+obp.to_xml_file # > "/tmp/iso-std-iso-[...]-20250102-26793-czvdyo/iso-std-iso-[...].xml"
 ----
 
 == Credits
