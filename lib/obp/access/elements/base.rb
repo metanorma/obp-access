@@ -4,11 +4,11 @@ module Obp
       class Elements
         class Base
           # Elements are rendered using the NISO STS spec here: https://www.niso-sts.org/TagLibrary/niso-sts-TL-1-2-html/index.html
-          attr_reader :document, :language, :node
+          attr_reader :document, :metas, :node
 
-          def initialize(document:, language:, node:)
+          def initialize(document:, metas:, node:)
             @document = document
-            @language = language
+            @metas = metas
             @node = node
           end
 
@@ -44,6 +44,11 @@ module Obp
             text
               .gsub("<b>", "<bold>").gsub("</b>", "</bold>")
               .gsub("<i>", "<italic>").gsub("</i>", "</italic>")
+          end
+
+          def local_image_path(img)
+            key = img.attr("src")
+            metas["images"][key]
           end
         end
       end

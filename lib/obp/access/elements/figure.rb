@@ -27,7 +27,7 @@ module Obp
             xml.caption do
               xml.title children.at(".sts-caption-title").content
             end
-            xml.graphic("xlink:href": children.at("img").attr("src"))
+            xml.graphic("xlink:href": local_image_path(children.at("img")))
           end
         end
       end
