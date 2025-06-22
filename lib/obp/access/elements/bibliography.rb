@@ -37,7 +37,8 @@ module Obp
             Nokogiri::XML::Builder.new do |xml|
               xml.send(:"ref-list", "content-type": "bibl", id: "sec_bibl") do
                 node.css("tr td:last-child").each_with_index do |children, index|
-                  xml.ref("content-type": "standard", id: "biblref_#{index + 1}") do
+                  xml.ref("content-type": "standard",
+                          id: "biblref_#{index + 1}") do
                     render_ref(xml, children)
                   end
                 end

@@ -9,7 +9,7 @@ module Obp
 
           def match_node?
             # Section foreword & introduction ids finishes with "foreword" & "intro"
-            super && (id == "foreword" || id == "intro")
+            super && %w[foreword intro].include?(id)
           end
 
           def target

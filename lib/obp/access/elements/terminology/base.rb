@@ -28,7 +28,9 @@ module Obp
               type = "noun"
 
               if content.end_with?("<b>verb</b>")
-                content = node.inner_html.gsub("<b>verb</b>", "").gsub("<b>,</b>", "")
+                content = node.inner_html.gsub("<b>verb</b>", "").gsub(
+                  "<b>,</b>", ""
+                )
                 type = "verb"
               end
 

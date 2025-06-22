@@ -4,8 +4,8 @@ gemspec
 
 group :development do
   gem "rake"
-  gem "rubocop"
-  gem "rubocop-performance"
+  gem "rubocop", require: false
+  gem "rubocop-performance", require: false
 end
 
 group :test do

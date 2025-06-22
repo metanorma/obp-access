@@ -8,7 +8,7 @@ module Obp
           end
 
           def match_node?
-            # Section ids finishes with an integer or decimal
+            # Section ids finish with an integer or decimal
             super && id =~ /\A\d+(\.\d+)*\z/
           end
 

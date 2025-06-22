@@ -5,6 +5,7 @@ require_relative "elements/section"
 require_relative "elements/figure"
 require_relative "elements/figure_group"
 require_relative "elements/list"
+require_relative "elements/array"
 require_relative "elements/table_wrap"
 require_relative "elements/title"
 require_relative "elements/paragraph"
@@ -50,7 +51,7 @@ module Obp
           section_path = xml.first.path
 
           node.children.each do |children_node|
-            # Recursively render children on actual xml section path
+            # Recursively render children on an actual XML section path
             render(node: children_node, target: section_path)
           end
 
