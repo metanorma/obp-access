@@ -9,7 +9,7 @@ module Obp
 
           def match_node?
             # Figure contains only one img in the same div.sts-fig, otherwise it's a fig-group
-            super && node.css("img").count == 1
+            super && node.css("img").one?
           end
 
           def content

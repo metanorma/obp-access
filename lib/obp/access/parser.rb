@@ -46,7 +46,10 @@ module Obp
       def html
         @html ||= begin
           html = state.filter_map { |attr| attr["htmlContent"] }.first
-          raise StandardError, "OBP can't by found using reference #{urn}." unless html
+          unless html
+            raise StandardError,
+                  "OBP can't by found using reference #{urn}."
+          end
 
           html
         end

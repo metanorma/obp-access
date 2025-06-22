@@ -12,7 +12,8 @@ module Obp
 
           def content # rubocop:disable Metrics/AbcSize
             # Force namespace_inheritance to stop children inherit their parent’s namespace
-            Nokogiri::XML::Builder.new(namespace_inheritance: false, encoding: "UTF-8") do |xml|
+            Nokogiri::XML::Builder.new(namespace_inheritance: false,
+                                       encoding: "UTF-8") do |xml|
               xml.standard("xmlns:xlink": "http://www.w3.org/1999/xlink",
                            "xmlns:mml": "http://www.w3.org/1998/Math/MathML",
                            "xmlns:tbx": urn) do
@@ -63,7 +64,9 @@ module Obp
               xml.send(:"title-wrap", "xml:lang": language) do
                 split = title.split("—")
                 elements = %w[intro main compl]
-                elements.each_with_index { |e, i| xml.send(e, split[i].strip) if split[i] }
+                elements.each_with_index do |e, i|
+                  xml.send(e, split[i].strip) if split[i]
+                end
                 xml.full title
               end
             end

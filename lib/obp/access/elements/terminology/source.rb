@@ -45,7 +45,9 @@ module Obp
 
             def render_ref(xml, child)
               rid = child.attr("href").split(":").last
-              xml.xref("ref-type": "bibr", rid: "ref_#{rid}") { xml << child.inner_html }
+              xml.xref("ref-type": "bibr", rid: "ref_#{rid}") do
+                xml << child.inner_html
+              end
             end
 
             def render_text(xml, child)
