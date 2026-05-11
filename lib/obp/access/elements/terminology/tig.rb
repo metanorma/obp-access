@@ -8,25 +8,45 @@ module Obp
               %w[sts-tbx-term]
             end
 
+            private
+
             def id
-              # The ID is attached to the section, not this div
               node.parent.at_css("div.sts-tbx-label").text.strip
             end
 
             def index
-              node.path.match(/\[(\d+)\](?=\z)/)[1].to_i - 1 # Extract index from xpath
+              node.path.match(/\[(\d+)\](?=\z)/)[1].to_i - 1
+            end
+
+            def normative_authorization
+              bold_term?(node) ? "admittedTerm" : "preferredTerm"
             end
 
             def content
               Nokogiri::XML::Builder.new do |xml|
-                xml.send(:"tbx:tig", id: "term_#{id}-#{index}") do
-                  term, part_of_speech = tbx_category(node)
-                  # Force xml tags generation rather than html escaping
-                  xml.send(:"tbx:term") do
-                    xml << term
-                  end
-                  xml.send(:"tbx:partOfSpeech", value: part_of_speech)
+                xml.public_send(:"tbx:tig", id: "term_#{id}-#{index}") do
+                  render_tig_content(xml)
                 end
+              end
+            end
+
+            def render_tig_content(xml)
+              result = GrammarParser.parse(parsed_html)
+              xml.public_send(:"tbx:term") { xml << result.term }
+              xml.public_send(:"tbx:partOfSpeech", value: result.pos)
+              render_genders(xml, result.genders)
+              xml.public_send(:"tbx:normativeAuthorization", value: normative_authorization)
+            end
+
+            def parsed_html
+              node.inner_html
+            end
+
+            def render_genders(xml, genders)
+              return unless genders.any?
+
+              genders.each do |gender|
+                xml.public_send(:"tbx:gram", value: gender, type: "gender")
               end
             end
           end
@@ -35,3 +55,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Terminology::Tig)

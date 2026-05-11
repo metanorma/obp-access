@@ -8,18 +8,31 @@ module Obp
               %w[sts-tbx-def]
             end
 
-            def insert_using
-              :prepend_child # In this XML, order matters. This node needs to appear before tbx:tig
+            private
+
+            def insert_method
+              :prepend_child
             end
 
             def content
-              Nokogiri::XML::Builder.new do |xml|
-                xml.send(:"tbx:definition") do
-                  node.children.each do |children|
-                    render_entailed_term(xml, children)
-                  end
+              extracted = DomainExtractor.extract(node)
+              @fragment = Nokogiri::XML::DocumentFragment.new(document)
+
+              Nokogiri::XML::Builder.with(@fragment) do |xml|
+                extracted.domains.each do |domain|
+                  xml.public_send(:"tbx:subjectField") { xml << domain }
+                end
+                xml.public_send(:"tbx:definition") do
+                  extracted.clean_children.each { |child| render_inline(xml, child) }
                 end
               end
+
+              @fragment
+            end
+
+            def to_xml
+              content
+              @fragment.to_xml
             end
           end
         end
@@ -27,3 +40,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Terminology::Definition)
