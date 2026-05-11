@@ -7,13 +7,23 @@ module Obp
             %w[sts-table-wrap fig-index]
           end
 
+          def match_node?
+            super && !inside_figure?
+          end
+
+          private
+
+          def inside_figure?
+            node.ancestors.any? { |a| a.classes == ["sts-fig"] }
+          end
+
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.send(:"table-wrap") do
-                xml.label label if label
-                if caption
+              xml.public_send(:"table-wrap") do
+                xml.label caption_label if caption_label
+                if caption_text
                   xml.caption do
-                    xml.title caption
+                    xml.title caption_text
                   end
                 end
                 xml.table { xml << node.at_css("table").inner_html }
@@ -21,17 +31,17 @@ module Obp
             end
           end
 
-          private
-
-          def label
-            @label ||= node.at_css(".sts-caption-label")&.content
+          def caption_label
+            @caption_label ||= node.at_css(".sts-caption-label")&.content
           end
 
-          def caption
-            @caption ||= node.at_css(".sts-caption")&.content
+          def caption_text
+            @caption_text ||= node.at_css(".sts-caption")&.content
           end
         end
       end
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::TableWrap)

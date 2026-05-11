@@ -8,25 +8,21 @@ module Obp
           end
 
           def match_node?
-            # Figure group contains many img in the same div.sts-fig, otherwise it's a fig
             super && node.css("img").count > 1
-          end
-
-          def content
-            Nokogiri::XML::Builder.new do |xml|
-              xml.send(:"fig-group") do
-                render_caption(xml, node)
-                node.css("img").each do |children|
-                  render_figure(xml, children)
-                end
-              end
-            end
           end
 
           private
 
+          def content
+            Nokogiri::XML::Builder.new do |xml|
+              xml.public_send(:"fig-group") do
+                render_caption(xml, node)
+                node.css("img").each { |img| render_figure(xml, img) }
+              end
+            end
+          end
+
           def render_caption(xml, children)
-            # children.at will return the first caption, which is used for fig-group caption
             xml.label children.at(".sts-caption-label").content
             xml.caption do
               xml.title children.at(".sts-caption-title").content
@@ -35,7 +31,7 @@ module Obp
 
           def render_figure(xml, img)
             xml.fig do
-              div = img.previous # Find the caption related to this img
+              div = img.previous
               xml.label div.at(".sts-caption-label").content
               xml.caption do
                 xml.title div.at(".sts-caption-title").content
@@ -48,3 +44,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::FigureGroup)
