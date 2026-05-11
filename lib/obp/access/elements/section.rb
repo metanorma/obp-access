@@ -8,11 +8,12 @@ module Obp
           end
 
           def match_node?
-            # Section ids finish with an integer or decimal
             super && id =~ /\A\d+(\.\d+)*\z/
           end
 
-          def target
+          private
+
+          def insertion_target
             "body"
           end
 
@@ -28,3 +29,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Section)

@@ -1,26 +1,3 @@
-require_relative "elements/base"
-require_relative "elements/root"
-require_relative "elements/introduction"
-require_relative "elements/section"
-require_relative "elements/figure"
-require_relative "elements/figure_group"
-require_relative "elements/list"
-require_relative "elements/array"
-require_relative "elements/table_wrap"
-require_relative "elements/title"
-require_relative "elements/paragraph"
-require_relative "elements/copyright"
-require_relative "elements/bibliography"
-require_relative "elements/terminology"
-require_relative "elements/terminology/base"
-require_relative "elements/terminology/definition"
-require_relative "elements/terminology/note"
-require_relative "elements/terminology/tig"
-require_relative "elements/terminology/tig_admitted"
-require_relative "elements/terminology/tig_preferred"
-require_relative "elements/terminology/example"
-require_relative "elements/terminology/source"
-
 module Obp
   class Access
     class Renderer
@@ -34,8 +11,8 @@ module Obp
       end
 
       def to_xml
-        nodes.map { |node| render(node:) }
-        document.to_xml
+        @nodes.each { |node| render(node:) }
+        @document.to_xml
       end
 
       private
@@ -43,34 +20,23 @@ module Obp
       def render(node:, target: nil)
         return unless css_classes_match?(node)
 
-        elements.map do |descendant|
-          element = descendant.new(document:, metas:, node:)
+        ElementRegistry.elements.each do |element_class|
+          element = element_class.new(document:, metas:, node:)
           next unless element.match_node?
 
           xml = element.render(target:)
           section_path = xml.first.path
 
-          node.children.each do |children_node|
-            # Recursively render children on an actual XML section path
-            render(node: children_node, target: section_path)
+          node.children.each do |child|
+            render(node: child, target: section_path)
           end
 
           xml
         end
       end
 
-      def elements
-        # Only Elements::Root isn't based on Elements::Base
-        @elements ||= ObjectSpace.each_object(Class).select { |klass| klass < Elements::Base }
-      end
-
-      def classes
-        @classes ||= elements.filter_map(&:classes).uniq
-      end
-
-      # Using Nokogiri ancestors node matching isn't good for performance, so just basic css classes matching is enough
       def css_classes_match?(node)
-        classes.any?(node.classes)
+        ElementRegistry.css_classes.any?(node.classes)
       end
     end
   end

@@ -28,5 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "nokogiri"
   spec.add_dependency "parallel"
   spec.add_dependency "sts"
+  spec.add_dependency "thor"
   spec.metadata["rubygems_mfa_required"] = "true"
 end

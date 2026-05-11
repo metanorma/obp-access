@@ -8,13 +8,12 @@ module Obp
               %w[sts-tbx-note]
             end
 
+            private
+
             def content
               Nokogiri::XML::Builder.new do |xml|
-                xml.send(:"tbx:note") do
-                  # NOTE: Can't guess <std><std-ref>
-                  node.children.each do |children|
-                    render_entailed_term(xml, children)
-                  end
+                xml.public_send(:"tbx:note") do
+                  node.children.each { |children| render_inline(xml, children) }
                 end
               end
             end
@@ -24,3 +23,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Terminology::Note)

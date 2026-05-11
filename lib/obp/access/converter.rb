@@ -10,14 +10,13 @@ module Obp
       end
 
       def to_xml
-        rendered = Renderer.new(urn:, metas:, nodes:)
-        rendered.to_xml
+        Renderer.new(urn:, metas:, nodes:).to_xml
       end
 
       private
 
       def nodes
-        html = source.gsub(/[[:space:]]/, " ") # Convert NBSP to spaces from html
+        html = source.gsub(/[[:space:]]/, " ")
         doc = Nokogiri::HTML(html)
         doc.css("body > div.sts-standard").children
       end
