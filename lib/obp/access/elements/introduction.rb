@@ -8,11 +8,12 @@ module Obp
           end
 
           def match_node?
-            # Section foreword & introduction ids finishes with "foreword" & "intro"
             super && %w[foreword intro].include?(id)
           end
 
-          def target
+          private
+
+          def insertion_target
             "front"
           end
 
@@ -26,3 +27,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Introduction)

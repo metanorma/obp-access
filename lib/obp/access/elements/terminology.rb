@@ -7,12 +7,14 @@ module Obp
             %w[sts-section sts-tbx-sec]
           end
 
+          private
+
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.send(:"term-sec", id: "sec_#{id}") do
+              xml.public_send(:"term-sec", id: "sec_#{id}") do
                 xml.label id
-                xml.send(:"tbx:termEntry", id: "term_#{id}") do
-                  xml.send(:"tbx:langSet", "xml:lang": metas["language"])
+                xml.public_send(:"tbx:termEntry", id: "term_#{id}") do
+                  xml.public_send(:"tbx:langSet", "xml:lang": metas["language"])
                 end
               end
             end
@@ -22,3 +24,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Terminology)

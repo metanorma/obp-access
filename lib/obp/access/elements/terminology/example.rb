@@ -8,12 +8,12 @@ module Obp
               %w[sts-tbx-example]
             end
 
+            private
+
             def content
               Nokogiri::XML::Builder.new do |xml|
-                xml.send(:"tbx:example") do
-                  node.css(".sts-tbx-example-content").children.each do |children|
-                    render_entailed_term(xml, children)
-                  end
+                xml.public_send(:"tbx:example") do
+                  node.css(".sts-tbx-example-content").children.each { |children| render_inline(xml, children) }
                 end
               end
             end
@@ -23,3 +23,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Terminology::Example)

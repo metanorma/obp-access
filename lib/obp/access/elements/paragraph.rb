@@ -3,18 +3,23 @@ module Obp
     class Renderer
       class Elements
         class Paragraph < Base
+          include InlineRenderer
+
           def self.classes
             %w[sts-p]
           end
 
           def match_node?
-            # Paragraph in a list are rendered within the list element
             super && node.parent.name != "li"
           end
 
+          private
+
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.p sanitize_text(node.inner_html)
+              xml.p do
+                node.children.each { |child| render_inline(xml, child) }
+              end
             end
           end
         end
@@ -22,3 +27,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Paragraph)

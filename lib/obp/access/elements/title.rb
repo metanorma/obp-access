@@ -7,8 +7,10 @@ module Obp
             %w[sts-sec-title]
           end
 
-          def insert_using
-            :prepend_child # In this XML, order matters. This node needs to appear at the top of the XML section
+          private
+
+          def insert_method
+            :prepend_child
           end
 
           def content
@@ -21,3 +23,5 @@ module Obp
     end
   end
 end
+
+Obp::Access::ElementRegistry.register(Obp::Access::Renderer::Elements::Title)
