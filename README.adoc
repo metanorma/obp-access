@@ -28,13 +28,63 @@ There are many situations where the informative content is already useful:
 
 === Usage
 
+==== Single language
+
 [source,ruby]
 ----
-obp = Obp::Access.fetch("iso:std:iso:...") # => #<Obp::Access @urn="iso:std:iso:...">
-obp.to_xml(pretty: true) # => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>..."
-obp.to_sts # => #<Sts::NisoSts::Standard>
-obp.to_xml_file # > "/tmp/iso-std-iso-[...]-20250102-26793-czvdyo/iso-std-iso-[...].xml"
+obp = Obp::Access.fetch("iso:std:iso:5598:ed-3:v1:en")
+obp.to_xml(pretty: true) # => NISO STS XML string
+obp.to_sts               # => #<Sts::NisoSts::Standard>
+obp.to_xml_file          # => "/tmp/iso-std-iso-5598-.../iso-std-iso-5598-....xml"
 ----
+
+==== Multilingual (specific languages)
+
+[source,ruby]
+----
+obp = Obp::Access.fetch("iso:std:iso:5598:ed-3:v1:en", languages: ["fr", "de"])
+obp.to_xml(pretty: true) # => NISO STS XML with en/fr/de langSets
+----
+
+==== Multilingual (all available languages)
+
+[source,ruby]
+----
+obp = Obp::Access.fetch("iso:std:iso:5598:ed-3:v1:en", languages: :all)
+obp.to_xml(pretty: true) # => NISO STS XML with all available language langSets
+----
+
+==== CLI
+
+Fetch a single document (English only):
+
+[source,shell]
+----
+$ obp-access fetch iso:std:iso:5598:ed-3:v1:en
+----
+
+Fetch with all available languages:
+
+[source,shell]
+----
+$ obp-access fetch -l all iso:std:iso:5598:ed-3:v1:en
+----
+
+Fetch with specific languages and save to file:
+
+[source,shell]
+----
+$ obp-access fetch -l fr,de -o output/ iso:std:iso:5598:ed-3:v1:en
+----
+
+=== Generated XML
+
+The output is NISO STS XML with TBX-Basic terminology markup:
+
+* Terms use `<tbx:termEntry>` with `<tbx:langSet>` per language
+* Grammar is encoded via `<tbx:gram>` (gender: m/f/n) and `<tbx:partOfSpeech>`
+* Domains are extracted as `<tbx:subjectField>`
+* Deprecated terms use `<tbx:normativeAuthorization value="deprecatedTerm"/>`
 
 == Credits
 
