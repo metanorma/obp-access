@@ -12,3 +12,7 @@ Gemfile.lock
 obp-access-*.gem
 .rubocop-https---raw-githubusercontent-com-riboseinc-oss-guides-master-ci-rubocop-yml
 .rspec_status
+obp-output/
+TODO.multilingual/
+*.xml
+!spec/fixtures/*.html
