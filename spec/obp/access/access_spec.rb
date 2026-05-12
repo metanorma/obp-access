@@ -41,6 +41,67 @@ RSpec.describe Obp::Access do
     end
   end
 
+  describe ".resolve_languages" do
+    it "resolves all 3 ISO official languages (en, fr, ru)" do
+      result = described_class.resolve_languages("en", :all, %w[fr ru])
+      expect(result).to eq(%w[en fr ru])
+    end
+
+    it "resolves Russian as primary with available en/fr" do
+      result = described_class.resolve_languages("ru", :all, %w[en fr])
+      expect(result).to eq(%w[ru en fr])
+    end
+
+    it "deduplicates when primary is also in available" do
+      result = described_class.resolve_languages("en", :all, %w[fr ru en])
+      expect(result).to eq(%w[en fr ru])
+    end
+  end
+
+  describe "ISO 5843-6 multilingual conversion" do
+    let(:fixtures_dir) { File.expand_path("../../../obp-output", __dir__) }
+    let(:base_metas) do
+      { "titles" => {}, "images" => {}, "description" => "ISO 5843/6",
+        "caption" => "ISO 5843/6:1981(en)" }
+    end
+
+    it "converts English HTML fixture to valid XML" do
+      skip "Fixture not available" unless File.exist?(File.join(fixtures_dir, "5483-6-en.html"))
+      urn = Obp::Access::Urn.new("iso:std:iso:5843-6:ed-1:v1:en")
+      source = File.read(File.join(fixtures_dir, "5483-6-en.html"))
+      metas = base_metas.merge("language" => "en")
+      xml = Obp::Access::Converter.new(urn:, metas:, source:).to_xml
+
+      expect(xml).to include("<standard")
+      expect(xml).to include("Foreword")
+      expect(xml).to include("Scope and field of application")
+    end
+
+    it "converts French HTML fixture to valid XML" do
+      skip "Fixture not available" unless File.exist?(File.join(fixtures_dir, "5483-6-fr.html"))
+      urn = Obp::Access::Urn.new("iso:std:iso:5843-6:ed-1:v1:fr")
+      source = File.read(File.join(fixtures_dir, "5483-6-fr.html"))
+      metas = base_metas.merge("language" => "fr")
+      xml = Obp::Access::Converter.new(urn:, metas:, source:).to_xml
+
+      expect(xml).to include("<standard")
+      expect(xml).to include("Avant-propos")
+      expect(xml).to include("Objet et domaine d")
+    end
+
+    it "converts Russian HTML fixture to valid XML" do
+      skip "Fixture not available" unless File.exist?(File.join(fixtures_dir, "5483-6-ru.html"))
+      urn = Obp::Access::Urn.new("iso:std:iso:5843-6:ed-1:v1:ru")
+      source = File.read(File.join(fixtures_dir, "5483-6-ru.html"))
+      metas = base_metas.merge("language" => "ru")
+      xml = Obp::Access::Converter.new(urn:, metas:, source:).to_xml
+
+      expect(xml).to include("<standard")
+      expect(xml).to include("Введение")
+      expect(xml).to include("Объект и область применения")
+    end
+  end
+
   describe "#to_sts" do
     it "returns a Sts::NisoSts::Standard" do
       xml = <<~XML

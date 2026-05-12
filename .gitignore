@@ -16,4 +16,5 @@ obp-output/
 TODO.multilingual/
 TODO.parity/
 *.xml
-!spec/fixtures/*.html
+*.html
+*.txt
