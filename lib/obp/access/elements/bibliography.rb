@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require_relative "bibliography/bib_ref"
+
 module Obp
   class Access
     class Renderer
@@ -16,35 +20,27 @@ module Obp
           def content
             Nokogiri::XML::Builder.new do |xml|
               xml.public_send(:"ref-list", "content-type": "bibl", id: "sec_bibl") do
-                node.css("tr td:last-child").each_with_index do |children, index|
-                  xml.ref("content-type": "standard", id: "biblref_#{index + 1}") do
-                    render_ref(xml, children)
+                node.css("tr").drop(1).each_with_index do |row, _index|
+                  td = row.css("td:last-child")
+                  anchor = row.at_css("td:first-child a[name]")
+                  ref = BibRef.new(td, anchor)
+                  xml.ref("content-type": "standard", id: "ref_#{ref.index}") do
+                    xml.label "[#{ref.index}]"
+                    render_std(xml, ref)
                   end
                 end
               end
             end
           end
 
-          def render_ref(xml, children) # rubocop:disable Metrics/AbcSize
-            href = children.at_css("a.sts-std-ref")
-            title = children.at_css("span.sts-std-title")
-
+          def render_std(xml, ref)
             attrs = {}
-            attrs["std-id"] = href.attr("href").delete("#") if href
+            attrs["std-id"] = ref.std_id if ref.std_id
+            attrs["type"] = ref.type if ref.type
 
-            xml.std(attrs) do
-              if href
-                xml.public_send(:"std-ref", href.content)
-                text = children.children[2] ? children.children[1].content : children.children[0].content
-                title_text = children.children[2] ? children.children[2].content : children.children[1].content
-                xml << text
-                xml.title title_text
-              elsif title
-                xml.public_send(:"std-ref", children.children[0].content)
-                xml.title children.children[1].content
-              else
-                xml << children.inner_html
-              end
+            xml.std(**attrs) do
+              xml.std_ref(ref.std_ref_text)
+              xml.title ref.title_text if ref.title_text
             end
           end
         end
