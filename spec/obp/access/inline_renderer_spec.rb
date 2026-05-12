@@ -131,5 +131,13 @@ RSpec.describe Obp::Access::InlineRenderer do
       expect(xref["ref-type"]).to eq("sec")
       expect(xref["rid"]).to eq("sec_3.2")
     end
+
+    it "renders ext-link with ext-link-type uri" do
+      node = Nokogiri::HTML.fragment('<a href="http://example.com">link</a>').children.first
+      result = renderer.build_xml { |xml| renderer.render_inline(xml, node) }
+      ext_link = result.at_css("ext-link")
+      expect(ext_link["ext-link-type"]).to eq("uri")
+      expect(ext_link.text).to eq("link")
+    end
   end
 end

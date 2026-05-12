@@ -63,7 +63,7 @@ RSpec.describe Obp::Access do
         </standard>
       XML
 
-      access = described_class.send(:new, Obp::Access::Urn.new("iso:std:iso:5598:ed-3:v1:en"))
+      access = described_class.new(Obp::Access::Urn.new("iso:std:iso:5598:ed-3:v1:en"))
       parser = double(to_xml: xml)
       allow(access).to receive(:parser).and_return(parser)
 
