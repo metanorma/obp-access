@@ -14,5 +14,6 @@ obp-access-*.gem
 .rspec_status
 obp-output/
 TODO.multilingual/
+TODO.parity/
 *.xml
 !spec/fixtures/*.html
