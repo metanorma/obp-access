@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Obp
   class Access
     class Renderer
@@ -10,13 +12,17 @@ module Obp
           private
 
           def insert_method
-            :prepend_child
+            :add_child
           end
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.title sanitize_text(node.content)
+              xml.title sanitize_text(section_title.text)
             end
+          end
+
+          def section_title
+            @section_title ||= SectionTitle.new(node.content)
           end
         end
       end
