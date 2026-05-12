@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Obp
   class Access
     class Renderer
@@ -19,7 +21,10 @@ module Obp
 
           def content
             Nokogiri::XML::Builder.new do |xml|
-              xml.sec(id: "sec_#{id}") do
+              attrs = { id: "sec_#{id}" }
+              sec_type = SectionType.for(id)
+              attrs[:"sec-type"] = sec_type if sec_type
+              xml.sec(**attrs) do
                 xml.label id
               end
             end
