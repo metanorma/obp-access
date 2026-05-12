@@ -88,7 +88,9 @@ module Obp
       end
 
       def render_ext_link(xml, node)
-        xml.public_send(:"ext-link", "xlink:href" => node.attr("href")) { xml << node.text.strip }
+        xml.public_send(:"ext-link",
+                        "ext-link-type" => "uri",
+                        "xlink:href" => node.attr("href")) { xml << node.text.strip }
       end
     end
   end
