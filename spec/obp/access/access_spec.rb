@@ -4,21 +4,40 @@ require "spec_helper"
 
 RSpec.describe Obp::Access do
   describe ".fetch" do
-    it "accepts a languages option" do
+    it "returns an Access instance for a single URN" do
       urn = "iso:std:iso:5598:ed-3:v1:en"
-      parser = instance_double(Obp::Access::Parser,
-                               to_xml: "<standard/>",
-                               html: "<html/>",
-                               available_languages: %w[fr de],
-                               title: "ISO 5598")
+      parser = double(to_xml: "<standard/>", available_languages: %w[fr de])
       allow(Obp::Access::Parser).to receive(:new).and_return(parser)
 
-      access = described_class.fetch(urn, languages: :all)
+      access = described_class.fetch(urn)
       expect(access).to be_a(described_class)
+      expect(access.urn.to_s).to eq("iso:std:iso:5598:ed-3:v1:en")
     end
 
     it "raises ArgumentError without URN" do
       expect { described_class.fetch(nil) }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe ".fetch_all" do
+    it "returns separate Access instances per language" do
+      urn = "iso:std:iso:5598:ed-3:v1:en"
+      parser = double(to_xml: "<standard/>", available_languages: %w[fr de])
+      allow(Obp::Access::Parser).to receive(:new).and_return(parser)
+
+      results = described_class.fetch_all(urn, languages: :all)
+      expect(results.size).to eq(3)
+      expect(results.map { |a| a.urn.language }).to contain_exactly("en", "fr", "de")
+    end
+
+    it "filters requested languages against available" do
+      urn = "iso:std:iso:5598:ed-3:v1:en"
+      parser = double(to_xml: "<standard/>", available_languages: %w[fr de])
+      allow(Obp::Access::Parser).to receive(:new).and_return(parser)
+
+      results = described_class.fetch_all(urn, languages: %w[fr])
+      expect(results.size).to eq(2)
+      expect(results.map { |a| a.urn.language }).to contain_exactly("en", "fr")
     end
   end
 
@@ -45,8 +64,8 @@ RSpec.describe Obp::Access do
       XML
 
       access = described_class.send(:new, Obp::Access::Urn.new("iso:std:iso:5598:ed-3:v1:en"))
-      allow(access).to receive(:primary_xml).and_return(xml)
-      allow(access).to receive(:multilingual?).and_return(false)
+      parser = double(to_xml: xml)
+      allow(access).to receive(:parser).and_return(parser)
 
       result = access.to_sts
       expect(result).to be_a(Sts::NisoSts::Standard)

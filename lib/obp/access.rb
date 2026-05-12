@@ -10,7 +10,6 @@ require_relative "access/urn"
 require_relative "access/inline_renderer"
 require_relative "access/grammar_parser"
 require_relative "access/domain_extractor"
-require_relative "access/multilingual_merger"
 require_relative "access/deliverable"
 require_relative "access/catalog"
 require_relative "access/retriever"
@@ -56,20 +55,33 @@ module Obp
 
     attr_reader :urn
 
-    def self.fetch(urn, languages: nil)
+    def self.fetch(urn)
       raise ArgumentError, "URN is required" unless urn
 
-      new(Urn.new(urn), languages:)
+      new(Urn.new(urn))
     end
 
-    def initialize(urn, languages: nil)
+    def self.fetch_all(urn, languages:)
+      urn = Urn.new(urn)
+      available = new(urn).available_languages
+      resolved = resolve_languages(urn.language, languages, available)
+      resolved.map { |lang| new(Urn.new("#{urn.base}:#{lang}")) }
+    end
+
+    def self.resolve_languages(primary, requested, available)
+      case requested
+      when :all then [primary] | available
+      when Array then [primary] | (requested & available)
+      else [primary]
+      end
+    end
+
+    def initialize(urn)
       @urn = urn
-      @languages = languages
     end
 
     def to_xml(pretty: false)
-      xml = primary_xml
-      xml = merge_translations(xml) if multilingual?
+      xml = parser.to_xml
       pretty ? pretty_print(xml) : xml
     end
 
@@ -83,48 +95,14 @@ module Obp
       path
     end
 
-    private
-
-    def primary_xml
-      @primary_xml ||= parser.to_xml
+    def available_languages
+      parser.available_languages
     end
+
+    private
 
     def parser
       @parser ||= Parser.new(urn:, directory: tmpdir)
-    end
-
-    def multilingual?
-      resolved_languages.size > 1
-    end
-
-    def resolved_languages
-      @resolved_languages ||= begin
-        available = parser.available_languages
-        case @languages
-        when nil then [urn.language]
-        when :all then [urn.language] | available
-        when Array then [urn.language] | (@languages & available)
-        end
-      end
-    end
-
-    def additional_languages
-      resolved_languages - [urn.language]
-    end
-
-    def merge_translations(xml)
-      document = Nokogiri::XML(xml)
-      additional_sources = fetch_additional_sources
-      MultilingualMerger.new(document, additional_sources, {}).merge
-      document.to_xml
-    end
-
-    def fetch_additional_sources
-      Parallel.map(additional_languages) do |lang|
-        other_urn = Urn.new("#{urn.base}:#{lang}")
-        other_parser = Parser.new(urn: other_urn, directory: tmpdir)
-        [lang, other_parser.html]
-      end.to_h
     end
 
     def pretty_print(xml)

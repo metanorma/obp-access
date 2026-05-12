@@ -10,9 +10,14 @@ module Obp
       option :languages, aliases: "-l", type: :string,
                          desc: "Languages: 'all' or comma-separated (e.g. 'fr,de')"
       def fetch(urn)
-        say "Fetching #{urn}..."
-        access = Access.fetch(urn, languages: parse_languages)
-        output(access)
+        langs = parse_languages
+        if langs
+          say "Fetching #{urn} (#{langs == :all ? 'all languages' : langs.join(', ')})..."
+          Access.fetch_all(urn, languages: langs).each { |access| output(access) }
+        else
+          say "Fetching #{urn}..."
+          output(Access.fetch(urn))
+        end
       rescue StandardError => e
         say "Error: #{e.message}", :red
         exit 1

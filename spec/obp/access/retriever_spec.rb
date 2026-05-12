@@ -22,7 +22,7 @@ RSpec.describe Obp::Access::Retriever do
   end
 
   let(:catalog) do
-    instance_double(Obp::Access::Catalog, retrievable: deliverables)
+    double(retrievable: deliverables)
   end
 
   let(:output_dir) { Dir.mktmpdir("retriever-test") }
@@ -34,7 +34,7 @@ RSpec.describe Obp::Access::Retriever do
       new_dir = File.join(output_dir, "nested")
       retriever = described_class.new(output_dir: new_dir, catalog:)
       allow(Obp::Access).to receive(:fetch).and_return(
-        instance_double(Obp::Access, to_xml: "<standard/>", urn: Obp::Access::Urn.new("iso:std:iso:9001:ed-5:v1:en")),
+        double(to_xml: "<standard/>", urn: Obp::Access::Urn.new("iso:std:iso:9001:ed-5:v1:en")),
       )
 
       retriever.run
@@ -48,14 +48,14 @@ RSpec.describe Obp::Access::Retriever do
       retriever = described_class.new(output_dir:, catalog:)
       retriever.run
 
-      # Should not attempt another fetch
       expect(File.read(File.join(output_dir, "manifest.json"))).to include("success")
     end
 
     it "writes manifest with success on fetch" do
-      access_instance = instance_double(Obp::Access,
-                                        to_xml: "<?xml version=\"1.0\"?>\n<standard/>",
-                                        urn: Obp::Access::Urn.new("iso:std:iso:9001:ed-5:v1:en"))
+      access_instance = double(
+        to_xml: "<?xml version=\"1.0\"?>\n<standard/>",
+        urn: Obp::Access::Urn.new("iso:std:iso:9001:ed-5:v1:en"),
+      )
 
       allow(Obp::Access).to receive(:fetch).with("iso:std:iso:9001:ed-5:v1:en").and_return(access_instance)
 
@@ -92,14 +92,14 @@ RSpec.describe Obp::Access::Retriever do
         "icsCode" => [],
         "ownerCommittee" => "ISO/TC 12",
       }
-      multi_catalog = instance_double(Obp::Access::Catalog,
-                                      retrievable: [Obp::Access::Deliverable.new(multi_lang_data)])
+      multi_catalog = double(retrievable: [Obp::Access::Deliverable.new(multi_lang_data)])
 
       allow(Obp::Access).to receive(:fetch) do |urn|
         urn_obj = Obp::Access::Urn.new(urn)
-        instance_double(Obp::Access,
-                        to_xml: "<?xml version=\"1.0\"?>\n<standard lang=\"#{urn_obj.language}\"/>",
-                        urn: urn_obj)
+        double(
+          to_xml: "<?xml version=\"1.0\"?>\n<standard lang=\"#{urn_obj.language}\"/>",
+          urn: urn_obj,
+        )
       end
 
       retriever = described_class.new(output_dir:, catalog: multi_catalog, concurrency: 1)
