@@ -46,7 +46,7 @@ module Obp
               return unless genders.any?
 
               genders.each do |gender|
-                xml.public_send(:"tbx:gram", value: gender, type: "gender")
+                xml.public_send(:"tbx:grammaticalGender", value: gender)
               end
             end
           end

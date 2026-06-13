@@ -9,11 +9,15 @@ module Obp
         "verb" => "verb",
       }.freeze
 
-      GENDER_VALUES = %w[m f n].freeze
+      GENDER_MAP = {
+        "m" => "masculine",
+        "f" => "feminine",
+        "n" => "neuter",
+      }.freeze
 
       BOLD_PATTERNS = [
         [->(t) { POS_MAP.key?(t) }, :handle_pos_marker],
-        [->(t) { GENDER_VALUES.include?(t) }, :handle_gender_marker],
+        [->(t) { GENDER_MAP.key?(t) }, :handle_gender_marker],
         [->(t) { t.match?(/\A[mfn],\z/) }, :handle_gender_with_comma],
         [->(t) { t.match?(/\A[mfn][,\s]+[mfn]([,\s]+[mfn])*\z/) }, :handle_multi_gender],
         [->(t) { t == "," }, :handle_comma],
@@ -60,15 +64,15 @@ module Obp
         end
 
         def handle_gender_marker(text, state)
-          state[:genders] << text.strip
+          state[:genders] << GENDER_MAP[text.strip]
         end
 
         def handle_gender_with_comma(text, state)
-          state[:genders] << text.strip[0]
+          state[:genders] << GENDER_MAP[text.strip[0]]
         end
 
         def handle_multi_gender(text, state)
-          text.strip.scan(/[mfn]/).each { |g| state[:genders] << g }
+          text.strip.scan(/[mfn]/).each { |g| state[:genders] << GENDER_MAP[g] }
         end
 
         def handle_enter_bracket(_text, state)
@@ -80,14 +84,14 @@ module Obp
         end
 
         def handle_gender_qualifier(text, state)
-          state[:genders] << text.strip[0]
+          state[:genders] << GENDER_MAP[text.strip[0]]
         end
 
         def handle_term_with_gender(text, state)
           stripped = text.strip
           if stripped =~ /\A(.+),\s*([mfn])\z/
             state[:term_parts] << $1.strip
-            state[:genders] << $2
+            state[:genders] << GENDER_MAP[$2]
           else
             state[:term_parts] << stripped
           end
