@@ -13,8 +13,11 @@ obp-access-*.gem
 .rubocop-https---raw-githubusercontent-com-riboseinc-oss-guides-master-ci-rubocop-yml
 .rspec_status
 obp-output/
+output/
 TODO.multilingual/
 TODO.parity/
 *.xml
 *.html
 *.txt
+/fetch_html.rb
+/fetch_en_html.rb
