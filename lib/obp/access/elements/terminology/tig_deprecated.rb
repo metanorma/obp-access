@@ -1,26 +1,18 @@
+# frozen_string_literal: true
+
 module Obp
   class Access
     class Renderer
       class Elements
         class Terminology
           class TigDeprecated < Tig
+            NORMATIVE_AUTHORIZATION = "deprecatedTerm"
+
             def self.classes
               %w[sts-tbx-term deprecatedTerm]
             end
 
             private
-
-            def normative_authorization
-              "deprecatedTerm"
-            end
-
-            def content
-              Nokogiri::XML::Builder.new do |xml|
-                xml.public_send(:"tbx:tig", id: "term_#{id}-#{index}") do
-                  render_tig_content(xml)
-                end
-              end
-            end
 
             def parsed_html
               strip_deprecation_label(node.inner_html)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Obp
   class Access
     class GrammarParser
@@ -21,10 +23,10 @@ module Obp
         [->(t) { t.match?(/\A[mfn],\z/) }, :handle_gender_with_comma],
         [->(t) { t.match?(/\A[mfn][,\s]+[mfn]([,\s]+[mfn])*\z/) }, :handle_multi_gender],
         [->(t) { t == "," }, :handle_comma],
-        [->(t) { t == "〈" },                     :handle_enter_bracket],
-        [->(t) { t == "〉" },                     :handle_exit_bracket],
-        [->(t) { t.match?(/\A[mfn]\s+/) },       :handle_gender_qualifier],
-        [->(t) { t.match?(/,.+[mfn]\z/) },       :handle_term_with_gender],
+        [->(t) { t == "〈" }, :handle_enter_bracket],
+        [->(t) { t == "〉" }, :handle_exit_bracket],
+        [->(t) { t.match?(/\A[mfn]\s+/) }, :handle_gender_qualifier],
+        [->(t) { t.match?(/,.+[mfn]\z/) }, :handle_term_with_gender],
       ].freeze
 
       def self.parse(inner_html)
@@ -64,15 +66,15 @@ module Obp
         end
 
         def handle_gender_marker(text, state)
-          state[:genders] << GENDER_MAP[text.strip]
+          add_gender(state, text.strip)
         end
 
         def handle_gender_with_comma(text, state)
-          state[:genders] << GENDER_MAP[text.strip[0]]
+          add_gender(state, text.strip[0])
         end
 
         def handle_multi_gender(text, state)
-          text.strip.scan(/[mfn]/).each { |g| state[:genders] << GENDER_MAP[g] }
+          text.strip.scan(/[mfn]/).each { |code| add_gender(state, code) }
         end
 
         def handle_enter_bracket(_text, state)
@@ -84,14 +86,14 @@ module Obp
         end
 
         def handle_gender_qualifier(text, state)
-          state[:genders] << GENDER_MAP[text.strip[0]]
+          add_gender(state, text.strip[0])
         end
 
         def handle_term_with_gender(text, state)
           stripped = text.strip
           if stripped =~ /\A(.+),\s*([mfn])\z/
-            state[:term_parts] << $1.strip
-            state[:genders] << GENDER_MAP[$2]
+            state[:term_parts] << Regexp.last_match(1).strip
+            add_gender(state, Regexp.last_match(2))
           else
             state[:term_parts] << stripped
           end
@@ -108,6 +110,10 @@ module Obp
         end
 
         def handle_skip(_text, _state); end
+
+        def add_gender(state, code)
+          state[:genders] << GENDER_MAP.fetch(code)
+        end
 
         def parse_segments(html)
           segments = []
