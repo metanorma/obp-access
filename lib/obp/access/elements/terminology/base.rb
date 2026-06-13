@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Obp
   class Access
     class Renderer
@@ -14,10 +16,6 @@ module Obp
 
             def path_suffix
               "/tbx:termEntry/tbx:langSet"
-            end
-
-            def bold_term?(node)
-              node.inner_html.start_with?("<b>") || node.inner_html.include?("<b>")
             end
           end
         end

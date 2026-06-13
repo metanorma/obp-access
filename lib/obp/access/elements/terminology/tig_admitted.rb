@@ -1,17 +1,15 @@
+# frozen_string_literal: true
+
 module Obp
   class Access
     class Renderer
       class Elements
         class Terminology
           class TigAdmitted < Tig
+            NORMATIVE_AUTHORIZATION = "admittedTerm"
+
             def self.classes
               %w[sts-tbx-term admittedTerm]
-            end
-
-            private
-
-            def normative_authorization
-              "admittedTerm"
             end
           end
         end

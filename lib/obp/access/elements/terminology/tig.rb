@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 module Obp
   class Access
     class Renderer
       class Elements
         class Terminology
           class Tig < Base
+            NORMATIVE_AUTHORIZATION = "preferredTerm"
+
             def self.classes
               %w[sts-tbx-term]
             end
@@ -19,7 +23,7 @@ module Obp
             end
 
             def normative_authorization
-              bold_term?(node) ? "admittedTerm" : "preferredTerm"
+              self.class::NORMATIVE_AUTHORIZATION
             end
 
             def content
