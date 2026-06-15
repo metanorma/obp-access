@@ -15,11 +15,12 @@ module Obp
             private
 
             def id
-              node.parent.at_css("div.sts-tbx-label").text.strip
+              node.parent.at_css("div.sts-tbx-label")&.text&.strip || ""
             end
 
             def index
-              node.path.match(/\[(\d+)\](?=\z)/)[1].to_i - 1
+              match = node.path.match(/\[(\d+)\](?=\z)/)
+              match ? match[1].to_i - 1 : 0
             end
 
             def normative_authorization
