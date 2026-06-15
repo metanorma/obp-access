@@ -8,7 +8,7 @@ module Obp
           end
 
           def match_node?
-            super && node.css("img").any?
+            super && node.css("img").one?
           end
 
           private
