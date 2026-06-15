@@ -99,6 +99,35 @@ RSpec.describe Obp::Access::Renderer::Elements::Terminology::Tig do
       tig = render_tig("pump")
       expect(tig.css("grammaticalGender")).to be_empty
     end
+
+    context "when the term entry lacks a sts-tbx-label div" do
+      def build_node_without_label(inner_html)
+        doc = Nokogiri::HTML::Document.parse(<<~HTML)
+          <html><body>
+            <div class="sts-tbx-sec">
+              <div class="sts-tbx-term">#{inner_html}</div>
+            </div>
+          </body></html>
+        HTML
+        doc.at_css("div.sts-tbx-term")
+      end
+
+      it "does not crash and renders the tig with an empty id segment" do
+        document = build_document
+        element = described_class.new(
+          document: document,
+          metas: { "language" => "en" },
+          node: build_node_without_label("pump"),
+        )
+        expect { element.render(target: tig_target_path) }.not_to raise_error
+
+        document.remove_namespaces!
+        tig = document.at_css("tig")
+        expect(tig).not_to be_nil
+        expect(tig.at_css("term").content).to eq("pump")
+        expect(tig["id"]).to start_with("term_-")
+      end
+    end
   end
 end
 
