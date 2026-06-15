@@ -22,7 +22,7 @@ RSpec.describe Obp::Access::Renderer::Elements::Figure do
   end
 
   describe "#match_node?" do
-    it "matches a sts-fig div with an image" do
+    it "matches a sts-fig div with exactly one image" do
       node = build_figure_node('<div class="sts-fig"><img src="fig1.png"/></div>')
       element = described_class.new(document: document, metas: metas, node: node)
       expect(element.match_node?).to be true
@@ -30,6 +30,12 @@ RSpec.describe Obp::Access::Renderer::Elements::Figure do
 
     it "does not match a sts-fig div without an image" do
       node = build_figure_node('<div class="sts-fig"><p>text</p></div>')
+      element = described_class.new(document: document, metas: metas, node: node)
+      expect(element.match_node?).to be false
+    end
+
+    it "does not match a sts-fig div with multiple images (FigureGroup handles that)" do
+      node = build_figure_node('<div class="sts-fig"><img src="a.png"/><img src="b.png"/></div>')
       element = described_class.new(document: document, metas: metas, node: node)
       expect(element.match_node?).to be false
     end
