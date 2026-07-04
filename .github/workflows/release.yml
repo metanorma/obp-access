@@ -2,11 +2,6 @@
 # See https://github.com/metanorma/cimas
 name: release
 
-permissions:
-  contents: write
-  packages: write
-  id-token: write
-
 on:
   workflow_dispatch:
     inputs:
@@ -27,3 +22,4 @@ jobs:
     secrets:
       rubygems-api-key: ${{ secrets.METANORMA_CI_RUBYGEMS_API_KEY }}
       pat_token: ${{ secrets.METANORMA_CI_PAT_TOKEN }}
+
