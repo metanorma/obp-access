@@ -17,8 +17,11 @@ module Obp
             nil
           end
 
+          # Subset match: OBP varies class order and adds marker classes
+          # (e.g. "commentable"), so a node matches when it carries at
+          # least the registered classes, regardless of order or extras.
           def match_node?
-            node.classes == self.class.classes
+            (self.class.classes - node.classes).empty?
           end
 
           def render(target:)
