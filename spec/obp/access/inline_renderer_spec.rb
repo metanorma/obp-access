@@ -63,6 +63,12 @@ RSpec.describe Obp::Access::InlineRenderer do
       expect(renderer.inline_type(node)).to eq(:label)
     end
 
+    it "returns :skip for sts-unknown-element" do
+      html = '<span class="sts-unknown-element">[no rendering defined]</span>'
+      node = Nokogiri::HTML.fragment(html).children.first
+      expect(renderer.inline_type(node)).to eq(:skip)
+    end
+
     it "returns :element for unknown elements" do
       node = Nokogiri::HTML.fragment("<span>generic</span>").children.first
       expect(renderer.inline_type(node)).to eq(:element)
@@ -112,6 +118,13 @@ RSpec.describe Obp::Access::InlineRenderer do
 
     it "skips label nodes" do
       node = Nokogiri::HTML.fragment('<span class="sts-label">1)</span>').children.first
+      result = renderer.build_xml { |xml| renderer.render_inline(xml, node) }
+      expect(result.children.length).to eq(0)
+    end
+
+    it "skips unknown-element nodes" do
+      html = '<span class="sts-unknown-element">[no rendering defined]</span>'
+      node = Nokogiri::HTML.fragment(html).children.first
       result = renderer.build_xml { |xml| renderer.render_inline(xml, node) }
       expect(result.children.length).to eq(0)
     end
