@@ -25,7 +25,9 @@ module Obp
           end
 
           def render(target:)
-            effective_target = insertion_target || target
+            # Top-level nodes without their own insertion target (e.g. a
+            # floating sts-p between sections) default to the body.
+            effective_target = insertion_target || target || "body"
             effective_target = "#{effective_target}#{path_suffix}" if path_suffix
             document.at(effective_target).public_send(insert_method, to_xml)
           end
