@@ -6,6 +6,9 @@ module Obp
         %w[sts-xref] => :xref,
         %w[sts-std-ref] => :std_ref,
         %w[sts-label] => :label,
+        # OBP's marker for content it could not map; drop its placeholder
+        # text ("[no rendering defined for element: ...]").
+        %w[sts-unknown-element] => :skip,
       }.freeze
 
       def render_inline(xml, node)
@@ -19,7 +22,7 @@ module Obp
       def render_node_by_type(xml, node, type)
         if CONTAINER_TYPES.key?(type)
           render_container(xml, node, CONTAINER_TYPES[type])
-        elsif type == :label
+        elsif %i[label skip].include?(type)
           nil
         elsif type == :element
           render_children(xml, node)

@@ -33,9 +33,12 @@ module Obp
 
           # Serialize the children as XML so void elements (e.g. <col>)
           # self-close; inner_html emits unclosed HTML voids that swallow
-          # following rows when the builder re-parses the fragment.
+          # following rows when the builder re-parses the fragment. OBP's
+          # "sts-unknown-element" placeholders are stripped first.
           def table_markup
-            node.at_css("table").children.map(&:to_xml).join
+            table = node.at_css("table").dup
+            table.css(".sts-unknown-element").each(&:remove)
+            table.children.map(&:to_xml).join
           end
 
           def caption_label
