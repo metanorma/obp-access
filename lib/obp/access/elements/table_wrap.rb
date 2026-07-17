@@ -4,7 +4,7 @@ module Obp
       class Elements
         class TableWrap < Base
           def self.classes
-            %w[sts-table-wrap fig-index]
+            %w[sts-table-wrap]
           end
 
           def match_node?
@@ -26,9 +26,16 @@ module Obp
                     xml.title caption_text
                   end
                 end
-                xml.table { xml << node.at_css("table").inner_html }
+                xml.table { xml << table_markup }
               end
             end
+          end
+
+          # Serialize the children as XML so void elements (e.g. <col>)
+          # self-close; inner_html emits unclosed HTML voids that swallow
+          # following rows when the builder re-parses the fragment.
+          def table_markup
+            node.at_css("table").children.map(&:to_xml).join
           end
 
           def caption_label
@@ -36,7 +43,8 @@ module Obp
           end
 
           def caption_text
-            @caption_text ||= node.at_css(".sts-caption")&.content
+            @caption_text ||= node.at_css(".sts-caption-title")&.content ||
+              node.at_css(".sts-caption")&.content
           end
         end
       end
