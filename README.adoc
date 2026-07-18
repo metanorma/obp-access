@@ -86,6 +86,117 @@ The output is NISO STS XML with TBX-Basic terminology markup:
 * Domains are extracted as `<tbx:subjectField>`
 * Deprecated terms use `<tbx:normativeAuthorization value="deprecatedTerm"/>`
 
+=== Tables and terms as YAML
+
+Besides STS XML, the same preview HTML can be read as YAML table data.
+ISO standards that carry terminology in tables rather than TBX term
+sections (the ISO 80000 quantity tables, "list of equivalent terms"
+tables) become machine-readable through two views:
+
+[source,ruby]
+----
+obp = Obp::Access.fetch("iso:std:iso:80000-12:ed-2:v2:en")
+obp.to_tables # => YAML string: every table in the document
+obp.to_terms  # => YAML string: term entries from term-carrying tables
+----
+
+Both reuse the already-fetched preview HTML, so no extra OBP request is
+made. A document without tables yields an empty YAML array (`--- []`).
+
+==== Generic tables (`to_tables`)
+
+`Obp::Access::TableMapper` maps every table-carrying node —
+`div.sts-table-wrap` and `div.sts-array`, in document order — to plain
+hashes, arrays and strings:
+
+[source,yaml]
+----
+- id: iso_std_iso_80000-12_ed-2_v2_en_tab_1 # wrapper id, if present
+  section: '3'      # containing clause ("index"/"bibl"/... stay raw)
+  label: Table 1    # .sts-caption-label, if present
+  caption: Quantities and units used in condensed matter physics
+  header:
+  - - text: Item No.
+    - text: Quantity
+      colspan: 3    # colspan/rowspan only when greater than 1
+    - text: Unit
+    - text: Remarks
+  rows:
+  - - text: 12-1.1
+    - text: lattice vector
+    - text: R
+    - text: translation vector that maps the crystal lattice on itself
+    - text: m
+    - text: The non-SI unit ångström (Å) is widely used ...
+----
+
+Cell text is plain stripped text: OBP `sts-unknown-element` placeholder
+spans are removed, and `<br>` / `div.sts-p` boundaries become spaces so
+multi-paragraph cells do not glue words together.
+
+==== Term entries (`to_terms`)
+
+`Obp::Access::TableTermExtractor` consumes the generic table model (not
+raw HTML) and extracts entries from term-carrying tables. Recognition
+rules, first match wins per table:
+
+. *Quantity/item tables* (ISO 80000 family): at least 4 columns, the
+  table sits in a numbered clause, and a majority of body rows start
+  with an item number (`12-1.1`, `4-1`). Column roles are resolved from
+  the joined header text — this handles the two-row colspan headers in
+  both English (Item No. / Quantity / Unit / Remarks) and French
+  (N° / Grandeur / Unité / Remarques) — falling back to the ISO 80000
+  column order item, designation, symbol, definition, unit, remarks.
+. *Equivalent-terms tables*: a header row naming languages in at least
+  2 columns. One entry per row, with `designations` keyed by downcased
+  language name; rows with a single designation (letter dividers) are
+  skipped.
+. Anything else is not a term table and yields no entries.
+
+[source,yaml]
+----
+- id: 12-1.1
+  designation: lattice vector
+  definition: translation vector that maps the crystal lattice on itself
+  symbol: R
+  unit: m
+  remarks: The non-SI unit ångström (Å) is widely used ...
+  source:
+    table: iso_std_iso_80000-12_ed-2_v2_en_tab_1
+    section: '3'
+- id: '2'
+  designations:
+    english: absorption, atmospheric
+    francais: absorption atmosphérique
+    deutsch: atmosphärische Absorption
+  source:
+    section: '1.1'
+----
+
+Only non-empty fields are emitted (`id` and `designation` are always
+present); duplicate item numbers within one table keep the first row.
+For equivalent-terms tables the entry `id` is the row's first cell when
+it looks like an item number, else the 1-based row index.
+
+==== Known limitations
+
+* Column mapping is header-text and position based; exotic header
+  layouts (rowspans in `thead`, role columns in unusual order) are not
+  resolved.
+* Quantity tables are recognized only in numbered clauses and only when
+  a strict majority of rows start with an item number; continuation
+  rows (blank item number) are skipped rather than merged into the
+  previous entry.
+* Item numbers must match `\d+-\d+(\.\d+)?` (U+2011 non-breaking hyphen
+  is normalized to `-`); rows printed differently in the source, such
+  as the `3.10.2` typo in ISO 80000-3, are skipped.
+* Cell text is flattened: subscripts/superscripts, inline formulas and
+  images lose their markup (`a1` for a₁), and French gender markers stay
+  glued to designations (`vecteur du réseau, m`).
+* Equivalent-terms designations are keyed by the downcased header text
+  as printed (`francais` in ISO 5843-6); mojibake headers (e.g.
+  `PyCCKMM` for Russian) are not recognized as languages.
+
 == Credits
 
 This gem is developed, maintained and funded by
