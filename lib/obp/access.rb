@@ -19,6 +19,7 @@ require_relative "access/parser"
 require_relative "access/converter"
 require_relative "access/imager"
 require_relative "access/renderer"
+require_relative "access/table_mapper"
 require_relative "access/cli"
 
 require_relative "access/elements/base"
@@ -95,6 +96,12 @@ module Obp
       Sts::NisoSts::Standard.from_xml(to_xml)
     end
 
+    # YAML serialization of every table in the OBP preview HTML
+    # (TableMapper's generic table model).
+    def to_tables
+      table_mapper.to_yaml
+    end
+
     def to_xml_file
       path = File.join(tmpdir, "#{urn.safe}.xml")
       File.write(path, to_xml(pretty: true))
@@ -109,6 +116,12 @@ module Obp
 
     def parser
       @parser ||= Parser.new(urn:, directory: tmpdir)
+    end
+
+    # Shares Parser#html (memoized) with the STS conversion path, so
+    # reading tables does not re-POST to the OBP.
+    def table_mapper
+      @table_mapper ||= TableMapper.new(source: parser.html)
     end
 
     def pretty_print(xml)
