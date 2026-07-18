@@ -133,4 +133,74 @@ RSpec.describe Obp::Access do
       expect(result.body.sec.size).to eq(1)
     end
   end
+
+  describe "#to_tables / #to_terms" do
+    let(:access) do
+      described_class.new(Obp::Access::Urn.new("iso:std:iso:80000-12:ed-2:v2:en"))
+    end
+
+    let(:quantity_html) do
+      <<~HTML
+        <div class="sts-standard">
+          <div class="sts-section" id="toc_x_sec_3">
+            <div class="sts-table-wrap" id="tab_1">
+              <table>
+                <thead>
+                  <tr><th>Item No.</th><th colspan="3">Quantity</th><th>Unit</th></tr>
+                  <tr><th></th><th>Name</th><th>Symbol</th><th>Definition</th>
+                    <th></th></tr>
+                </thead>
+                <tbody><tr><td>12-1.1</td><td>lattice vector</td><td>R</td>
+                  <td>definition</td><td>m</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      HTML
+    end
+
+    def stub_parser(access, html)
+      parser = double(html: html)
+      allow(access).to receive(:parser).and_return(parser)
+    end
+
+    it "serializes the generic table model as YAML" do
+      stub_parser(access, quantity_html)
+
+      expected = [
+        { "id" => "tab_1", "section" => "3",
+          "header" => [
+            [{ "text" => "Item No." }, { "text" => "Quantity", "colspan" => 3 },
+             { "text" => "Unit" }],
+            [{ "text" => "" }, { "text" => "Name" }, { "text" => "Symbol" },
+             { "text" => "Definition" }, { "text" => "" }],
+          ],
+          "rows" => [
+            [{ "text" => "12-1.1" }, { "text" => "lattice vector" },
+             { "text" => "R" }, { "text" => "definition" }, { "text" => "m" }],
+          ] },
+      ]
+
+      expect(YAML.safe_load(access.to_tables)).to eq(expected)
+    end
+
+    it "serializes extracted term entries as YAML" do
+      stub_parser(access, quantity_html)
+
+      expected = [
+        { "id" => "12-1.1", "designation" => "lattice vector",
+          "definition" => "definition", "symbol" => "R", "unit" => "m",
+          "source" => { "table" => "tab_1", "section" => "3" } },
+      ]
+
+      expect(YAML.safe_load(access.to_terms)).to eq(expected)
+    end
+
+    it "serializes empty arrays when the document has no tables" do
+      stub_parser(access, '<div class="sts-standard"></div>')
+
+      expect(access.to_tables).to eq("--- []\n")
+      expect(access.to_terms).to eq("--- []\n")
+    end
+  end
 end
