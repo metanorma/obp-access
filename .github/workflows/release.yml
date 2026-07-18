@@ -26,7 +26,15 @@ jobs:
       # Surfaced by kwkwan on metanorma-plugin-lutaml#285. Deeper fix
       # (bundle install inside rubygems-release.yml's release job) tracked
       # separately.
+      #
+      # The `bundle config unset without` is needed because the reusable's
+      # release job installs production groups only
+      # (`bundle config set --local without 'development test'`), while
+      # `rake` lives in this repo's :development group — without unsetting,
+      # `bundle exec rake release` dies with "can't find executable rake"
+      # (do-release run 29626092313).
       release_command: |
+        bundle config unset --local without
         bundle install
         bundle exec rake release
     secrets:
