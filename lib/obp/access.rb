@@ -20,6 +20,7 @@ require_relative "access/converter"
 require_relative "access/imager"
 require_relative "access/renderer"
 require_relative "access/table_mapper"
+require_relative "access/table_term_extractor"
 require_relative "access/cli"
 
 require_relative "access/elements/base"
@@ -100,6 +101,12 @@ module Obp
     # (TableMapper's generic table model).
     def to_tables
       table_mapper.to_yaml
+    end
+
+    # YAML serialization of term entries extracted from the document's
+    # term-carrying tables (TableTermExtractor over the table model).
+    def to_terms
+      TableTermExtractor.new(tables: table_mapper.tables).to_yaml
     end
 
     def to_xml_file
