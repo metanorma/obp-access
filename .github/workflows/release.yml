@@ -14,29 +14,17 @@ on:
   repository_dispatch:
     types: [ do-release ]
 
+# Least-privilege ceiling for the called rubygems-release.yml: its release job
+# needs contents:write (git tag push) and id-token:write (OIDC Trusted Publishing).
+permissions:
+  contents: write
+  id-token: write
+
 jobs:
   release:
     uses: metanorma/ci/.github/workflows/rubygems-release.yml@main
     with:
       next_version: ${{ github.event.inputs.next_version }}
-      # Explicit release_command needed since metanorma/ci#314 deprecated
-      # `bundler_cache` (hardcoded to false) — the reusable's release job no
-      # longer runs `bundle install` implicitly via ruby/setup-ruby, so the
-      # default `bundle exec rake release` fires against uninstalled gems.
-      # Surfaced by kwkwan on metanorma-plugin-lutaml#285. Deeper fix
-      # (bundle install inside rubygems-release.yml's release job) tracked
-      # separately.
-      #
-      # The `bundle config unset without` is needed because the reusable's
-      # release job installs production groups only
-      # (`bundle config set --local without 'development test'`), while
-      # `rake` lives in this repo's :development group — without unsetting,
-      # `bundle exec rake release` dies with "can't find executable rake"
-      # (do-release run 29626092313).
-      release_command: |
-        bundle config unset --local without
-        bundle install
-        bundle exec rake release
     secrets:
       rubygems-api-key: ${{ secrets.METANORMA_CI_RUBYGEMS_API_KEY }}
       pat_token: ${{ secrets.METANORMA_CI_PAT_TOKEN }}
