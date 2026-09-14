@@ -53,4 +53,46 @@ RSpec.describe Obp::Access::Urn do
       expect(a.hash).to eq(b.hash)
     end
   end
+
+  describe "#doc_number / #edition / #version / #doc_type" do
+    it "parses a simple standard URN" do
+      urn = described_class.new("iso:std:iso:5598:ed-3:v1:en")
+      expect(urn.doc_number).to eq("5598")
+      expect(urn.edition).to eq("3")
+      expect(urn.version).to eq("1")
+      expect(urn.doc_type).to eq("IS")
+    end
+
+    it "parses a part-numbered standard URN" do
+      urn = described_class.new("iso:std:iso:80000:-12:ed-2:v1:en")
+      expect(urn.doc_number).to eq("80000-12")
+      expect(urn.edition).to eq("2")
+      expect(urn.version).to eq("1")
+      expect(urn.doc_type).to eq("IS")
+    end
+
+    it "parses a multi-part standard URN" do
+      urn = described_class.new("iso:std:iec:60601:-1-10:ed-1:v1:en")
+      expect(urn.doc_number).to eq("60601-1-10")
+      expect(urn.edition).to eq("1")
+      expect(urn.version).to eq("1")
+      expect(urn.doc_type).to eq("IS")
+    end
+
+    it "parses a technical specification URN" do
+      urn = described_class.new("iso:std:iso:ts:14812:ed-2:v1:en")
+      expect(urn.doc_number).to eq("14812")
+      expect(urn.edition).to eq("2")
+      expect(urn.version).to eq("1")
+      expect(urn.doc_type).to eq("TS")
+    end
+
+    it "parses a technical report URN" do
+      urn = described_class.new("iso:std:iso:tr:12345:ed-1:v1:en")
+      expect(urn.doc_number).to eq("12345")
+      expect(urn.edition).to eq("1")
+      expect(urn.version).to eq("1")
+      expect(urn.doc_type).to eq("TR")
+    end
+  end
 end

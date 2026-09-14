@@ -25,18 +25,25 @@ module Obp
           end
 
           def render_fn(xml, note)
-            xml.fn(id: "fn_#{fn_id(note)}") do
-              xml.label fn_id(note)
+            id = fn_id(note)
+            xml.fn(id: "fn_#{id}") do
+              xml.label id
               xml.p fn_text(note)
             end
           end
 
           def fn_id(note)
-            note.attr("id").split("_").last
+            note.attr("id")&.split("_")&.last || note.object_id.to_s
           end
 
           def fn_text(note)
-            note.at_css("div").text.strip.sub(/\A\d+\s*/, "")
+            div = note.at_css("div")
+            if div
+              div.text.strip.sub(/\A\d+\s*/,
+                                 "")
+            else
+              note.text.strip.sub(/\A\d+\s*/, "")
+            end
           end
         end
       end

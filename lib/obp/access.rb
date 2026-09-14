@@ -16,6 +16,7 @@ require_relative "access/retriever"
 require_relative "access/fetcher"
 require_relative "access/element_registry"
 require_relative "access/parser"
+require_relative "access/raw_html_parser"
 require_relative "access/converter"
 require_relative "access/imager"
 require_relative "access/renderer"
@@ -76,6 +77,15 @@ module Obp
       resolved.map { |lang| new(Urn.new("#{urn.base}:#{lang}")) }
     end
 
+    # Build an Access from an already-downloaded OBP HTML fragment (e.g.
+    # captured via a browser or waffle-punch). No network requests are made.
+    def self.from_html(urn:, html:, caption: nil, titles: nil)
+      raise ArgumentError, "URN is required" unless urn
+      raise ArgumentError, "HTML is required" unless html
+
+      new(Urn.new(urn), html: html, caption: caption, titles: titles)
+    end
+
     def self.resolve_languages(primary, requested, available)
       case requested
       when :all then [primary] | available
@@ -84,8 +94,11 @@ module Obp
       end
     end
 
-    def initialize(urn)
+    def initialize(urn, html: nil, caption: nil, titles: nil)
       @urn = urn
+      @raw_html = html
+      @caption = caption
+      @raw_titles = titles
     end
 
     def to_xml(pretty: false)
@@ -119,10 +132,20 @@ module Obp
       parser.available_languages
     end
 
+    # Raw sts-standard HTML fragment as served by the OBP.
+    def html
+      parser.html
+    end
+
     private
 
     def parser
-      @parser ||= Parser.new(urn:, directory: tmpdir)
+      @parser ||= if @raw_html
+                    RawHtmlParser.new(urn:, directory: tmpdir, html: @raw_html,
+                                      caption: @caption, titles: @raw_titles)
+                  else
+                    Parser.new(urn:, directory: tmpdir)
+                  end
     end
 
     # Shares Parser#html (memoized) with the STS conversion path, so
