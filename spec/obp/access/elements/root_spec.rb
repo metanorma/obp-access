@@ -54,6 +54,21 @@ RSpec.describe Obp::Access::Renderer::Elements::Root do
       expect(doc.at_css("copyright-year").text).to eq("2020")
     end
 
+    it "renders dated std-ref without language suffix" do
+      std_refs = doc.css("std-ref")
+      expect(std_refs.map { |r| [r["type"], r.text] }).to include(
+        ["dated", "ISO 5598:2020"],
+        ["undated", "ISO 5598"],
+      )
+    end
+
+    it "strips every parenthesised suffix group in std-ref" do
+      multi = metas.merge("caption" => "ISO 123:2025(en)(fr)")
+      doc = described_class.new(urn:, metas: multi).content.doc
+      dated = doc.css("std-ref").find { |r| r["type"] == "dated" }
+      expect(dated.text).to eq("ISO 123:2025")
+    end
+
     it "places permissions last in std-meta" do
       meta = doc.at_css("std-meta")
       last_element = meta.children.select(&:element?).last
