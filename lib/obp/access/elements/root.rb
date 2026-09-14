@@ -93,7 +93,7 @@ module Obp
           end
 
           def ref_dated
-            caption&.gsub(/\([^)]*\)/, "") || ref
+            caption&.gsub(/\([^()]*\)/, "") || ref
           end
 
           def ref_undated
