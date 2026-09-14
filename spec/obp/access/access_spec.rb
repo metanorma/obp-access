@@ -58,6 +58,67 @@ RSpec.describe Obp::Access do
     end
   end
 
+  describe ".from_html" do
+    let(:urn) { "iso:std:iso:80000-12:ed-2:v2:en" }
+    let(:html) do
+      <<~HTML
+        <div class="sts-standard">
+          <div class="sts-section" id="toc_x_sec_3">
+            <div class="sts-table-wrap" id="tab_1">
+              <table>
+                <thead>
+                  <tr><th>Item No.</th><th colspan="3">Quantity</th><th>Unit</th></tr>
+                  <tr><th></th><th>Name</th><th>Symbol</th><th>Definition</th>
+                    <th></th></tr>
+                </thead>
+                <tbody><tr><td>12-1.1</td><td>lattice vector</td><td>R</td>
+                  <td>definition</td><td>m</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      HTML
+    end
+
+    it "returns an Access instance" do
+      access = described_class.from_html(urn: urn, html: html, caption: "ISO 80000-12:2019")
+      expect(access).to be_a(described_class)
+      expect(access.urn.to_s).to eq(urn)
+    end
+
+    it "raises ArgumentError without URN" do
+      expect { described_class.from_html(urn: nil, html: html) }.to raise_error(ArgumentError)
+    end
+
+    it "raises ArgumentError without HTML" do
+      expect { described_class.from_html(urn: urn, html: nil) }.to raise_error(ArgumentError)
+    end
+
+    it "converts raw HTML to STS XML without network" do
+      access = described_class.from_html(urn: urn, html: html, caption: "ISO 80000-12:2019")
+      xml = access.to_xml
+      expect(xml).to include("<standard")
+      expect(xml).to include("ISO 80000-12:2019")
+      expect(xml).to include("lattice vector")
+    end
+
+    it "extracts table terms from raw HTML without network" do
+      access = described_class.from_html(urn: urn, html: html, caption: "ISO 80000-12:2019")
+      terms = YAML.safe_load(access.to_terms)
+      expect(terms.size).to eq(1)
+      expect(terms.first["designation"]).to eq("lattice vector")
+    end
+
+    it "honours supplied titles" do
+      access = described_class.from_html(
+        urn: urn, html: html, caption: "ISO 80000-12:2019",
+        titles: { "en" => "Quantities and units — Part 12: Solid state physics" }
+      )
+      xml = access.to_xml
+      expect(xml).to include("Quantities and units")
+    end
+  end
+
   describe "ISO 5843-6 multilingual conversion" do
     let(:fixtures_dir) { File.expand_path("../../../obp-output", __dir__) }
     let(:base_metas) do

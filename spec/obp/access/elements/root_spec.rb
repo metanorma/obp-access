@@ -73,4 +73,30 @@ RSpec.describe Obp::Access::Renderer::Elements::Root do
       expect(doc.at_css("doc-type").text).to eq("TS")
     end
   end
+
+  describe "part-numbered standards" do
+    it "renders correct std-ident for ISO 80000-12" do
+      part_urn = Obp::Access::Urn.new("iso:std:iso:80000:-12:ed-2:v1:en")
+      part_metas = metas.merge("caption" => "ISO 80000-12:2019(en)")
+      root = described_class.new(urn: part_urn, metas: part_metas)
+      doc = root.content.doc
+
+      ident = doc.at_css("std-ident")
+      expect(ident.at_css("doc-number").text).to eq("80000-12")
+      expect(ident.at_css("edition").text).to eq("2")
+      expect(ident.at_css("version").text).to eq("1")
+    end
+
+    it "renders correct std-ident for IEC 60601-1-10" do
+      part_urn = Obp::Access::Urn.new("iso:std:iec:60601:-1-10:ed-1:v1:en")
+      part_metas = metas.merge("caption" => "IEC 60601-1-10:2007(en)")
+      root = described_class.new(urn: part_urn, metas: part_metas)
+      doc = root.content.doc
+
+      ident = doc.at_css("std-ident")
+      expect(ident.at_css("doc-number").text).to eq("60601-1-10")
+      expect(ident.at_css("edition").text).to eq("1")
+      expect(ident.at_css("version").text).to eq("1")
+    end
+  end
 end

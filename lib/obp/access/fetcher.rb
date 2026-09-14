@@ -48,7 +48,10 @@ module Obp
           "v-loc" => "#{API_URL}##{@urn}",
         )
 
-        Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+        Net::HTTP.start(
+          uri.hostname, uri.port, use_ssl: true,
+                                  open_timeout: 30, read_timeout: 60
+        ) do |http|
           http.request(request)
         end
       end

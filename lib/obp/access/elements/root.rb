@@ -42,7 +42,7 @@ module Obp
           def std_meta_content(xml)
             render_titles(xml)
             xml.public_send(:"proj-id", ref_undated)
-            xml.public_send(:"release-version", doc_type)
+            xml.public_send(:"release-version", urn.doc_type)
             render_std_ident(xml)
             xml.public_send(:"content-language", metas["language"])
             xml.public_send(:"std-ref", ref_dated, type: "dated")
@@ -55,10 +55,10 @@ module Obp
           def render_std_ident(xml)
             xml.public_send(:"std-ident") do
               xml.originator holder
-              xml.public_send(:"doc-type", doc_type)
-              xml.public_send(:"doc-number", urn_parts[3])
-              xml.edition urn_parts[4].delete_prefix("ed-")
-              xml.version urn_parts[5].delete_prefix("v")
+              xml.public_send(:"doc-type", urn.doc_type)
+              xml.public_send(:"doc-number", urn.doc_number)
+              xml.edition urn.edition
+              xml.version urn.version
             end
           end
 
@@ -85,35 +85,27 @@ module Obp
           end
 
           def holder
-            metas["caption"].split.first
+            caption&.split(/[[:space:]]/)&.first || urn.originator.upcase
           end
 
           def ref
-            metas["caption"]
+            caption || urn.to_s
           end
 
           def ref_dated
-            metas["caption"].gsub(/\(.*?\)/, "")
+            caption&.gsub(/\(.*?\)/, "") || ref
           end
 
           def ref_undated
-            @ref_undated ||= metas["caption"].split(":").first
+            @ref_undated ||= caption&.split(":")&.first || urn.doc_number
           end
 
           def copyright_year
-            metas["caption"][/:(\d{4})/, 1]
+            caption&.[](/:(\d{4})/, 1)
           end
 
-          def doc_type
-            case urn_parts[3]
-            when "ts" then "TS"
-            when "tr" then "TR"
-            else "IS"
-            end
-          end
-
-          def urn_parts
-            @urn_parts ||= urn.raw.split(":")
+          def caption
+            metas["caption"]
           end
         end
       end

@@ -54,6 +54,27 @@ obp = Obp::Access.fetch("iso:std:iso:5598:ed-3:v1:en", languages: :all)
 obp.to_xml(pretty: true) # => NISO STS XML with all available language langSets
 ----
 
+==== Already-downloaded HTML
+
+When the OBP page was fetched out of band (e.g. through a browser or
+waffle-punch), build an Access instance from the raw HTML fragment and
+convert it without any further network calls:
+
+[source,ruby]
+----
+obp = Obp::Access.from_html(
+  urn:     "iso:std:iso:80000-12:ed-2:v2:en",
+  html:    File.read("iso-80000-12-en.html"),
+  caption: "ISO 80000-12:2019",
+  titles:  { "en" => "Quantities and units — Part 12: Solid state physics" },
+)
+obp.to_xml(pretty: true) # => NISO STS XML
+obp.to_terms             # => YAML string of table-carried terms
+----
+
+`caption` is used to build the STS metadata (std-ref, copyright year); it
+should match the document reference. `titles` is optional.
+
 ==== CLI
 
 Fetch a single document (English only):

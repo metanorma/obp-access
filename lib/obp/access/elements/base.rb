@@ -47,7 +47,7 @@ module Obp
           end
 
           def id
-            @id ||= node.attr("id").split("_").last
+            @id ||= node.attr("id")&.split("_")&.last
           end
 
           def to_xml

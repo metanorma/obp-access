@@ -55,7 +55,7 @@ module Obp
       end
 
       def tab_data
-        @tab_data ||= state.filter_map { |attr| attr["tabs"] }.first.last
+        @tab_data ||= state.filter_map { |attr| attr["tabs"] }.first&.last || {}
       end
 
       def titles

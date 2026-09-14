@@ -36,7 +36,10 @@ module Obp
           # following rows when the builder re-parses the fragment. OBP's
           # "sts-unknown-element" placeholders are stripped first.
           def table_markup
-            table = node.at_css("table").dup
+            table = node.at_css("table")
+            return "" unless table
+
+            table = table.dup
             table.css(".sts-unknown-element").each(&:remove)
             table.children.map(&:to_xml).join
           end
