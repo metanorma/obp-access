@@ -117,21 +117,26 @@ module Obp
 
         def parse_segments(html)
           segments = []
-          remaining = html.dup
+          remaining = html
 
-          while remaining.length.positive?
-            match = remaining.match(/\A(.*?)(<b>(.*?)<\/b>)(.*)/m)
-            if match
-              segments << { text: match[1], bold: false } if match[1].length.positive?
-              segments << { text: match[3], bold: true }
-              remaining = match[4]
-            else
-              segments << { text: remaining, bold: false }
-              break
-            end
+          until remaining.nil? || remaining.empty?
+            remaining = consume_segment(remaining, segments)
           end
 
           segments
+        end
+
+        def consume_segment(remaining, segments)
+          open = remaining.index("<b>")
+          close = open && remaining.index("</b>", open + 3)
+          if open.nil? || close.nil?
+            segments << { text: remaining, bold: false }
+            return ""
+          end
+
+          segments << { text: remaining[0, open], bold: false } if open.positive?
+          segments << { text: remaining[(open + 3)...close], bold: true }
+          remaining[(close + 4)..] || ""
         end
 
         def clean_term(parts)

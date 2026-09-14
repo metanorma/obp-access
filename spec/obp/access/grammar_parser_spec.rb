@@ -122,6 +122,22 @@ RSpec.describe Obp::Access::GrammarParser do
       expect(result).to be_a(Struct)
       expect(result.members).to eq(%i[term pos genders])
     end
+
+    it "keeps an unmatched bold open tag as plain text" do
+      result = described_class.parse("Kolben<b>m")
+      expect(result.term).to eq("Kolben<b>m")
+      expect(result.genders).to eq([])
+    end
+
+    it "handles an empty bold tag" do
+      result = described_class.parse("<b></b> pump")
+      expect(result.term).to eq("pump")
+    end
+
+    it "stops bold content at the first closing tag" do
+      result = described_class.parse("<b>a<b>b</b>c")
+      expect(result.term).to eq("a<b>bc")
+    end
   end
 
   describe "GENDER_MAP" do
